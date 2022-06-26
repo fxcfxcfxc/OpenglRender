@@ -2,6 +2,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Shader.h"
 
 //----------------------------------------模型顶点信息-------------------
 float vertices[] =
@@ -21,7 +22,7 @@ unsigned int indices[] =
 };
 
 //------------------------------------------------------------------------
-
+//从VAO 属性列表 传输数据 到 vertexshader  ，再输出需要的数据
 const char* vertexShaderSource =
 "#version 330 core                                       \n    "
 "layout(location = 0 ) in vec3 aPos;                      \n   "
@@ -33,7 +34,7 @@ const char* vertexShaderSource =
 
 
 
-
+//从 vertexshader 接收数据  再输出片元数据
 const char* fragmentShaderSource =
 "#version 330 core                                       \n   "
 "in vec4 ourColor;                                       \n   "
@@ -58,7 +59,9 @@ void processInput(GLFWwindow*  window)
 
 
 int main() 
-{
+{   
+    Shader* sha = new Shader("vertexSource.txt","fragmentSource.txt");
+     
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -102,7 +105,7 @@ int main()
     glGenBuffers(1,&VBO);
     //第一个参数代表绑定的数据类型
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    //将模型pos属性复制到vbo中
+    //将模型pos属性复制到vbo中   obj array ->  VBO buffer
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
@@ -136,7 +139,8 @@ int main()
     glAttachShader(shaderProgram,fragmentShader);
     glLinkProgram(shaderProgram);
 
-    //-----------------link------------------
+    //-----------------VBO -》  VAO------------------
+    // 将正确的属性 放入到 VAO对应的插槽数组中
     //链接顶点pos属性
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
