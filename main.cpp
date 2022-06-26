@@ -3,13 +3,13 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-//模型顶点信息
+//----------------------------------------模型顶点信息-------------------
 float vertices[] =
 {
-    0.5f,0.5f,0.0f,
-    0.5f,-0.5f,0.0f,
-    -0.5f,-0.5f,0.0f,
-    - 0.5f,0.5f,0.0f
+    0.5f,0.5f,0.0f,   1.0f, 0.0f, 0.0f,//0
+    0.5f,-0.5f,0.0f,  0.0f, 1.0f, 0.0f,//1
+    -0.5f,-0.5f,0.0f, 0.0f, 0.0f, 1.0f,//2
+    - 0.5f,0.5f,0.0f, 0.3f, 0.2f, 0.1f//3
 
 };
 
@@ -20,24 +20,30 @@ unsigned int indices[] =
 
 };
 
+//------------------------------------------------------------------------
+
 const char* vertexShaderSource =
-"#version 330 core                                       \n   "
-"layout(location =0 ) in vec3 aPos;                      \n   "
+"#version 330 core                                       \n    "
+"layout(location = 0 ) in vec3 aPos;                      \n   "
+"layout(location = 1 ) in vec3 aColor;                    \n   "
+"out vec4 ourColor;                                       \n   "
 "void main(){\n                                               "
-"        gl_Position = vec4(aPos.x, aPos.y, aPos.z,  1.0) ; }\n  ";
+"        gl_Position = vec4(aPos.x, aPos.y, aPos.z,  1.0) ; \n  "
+"        ourColor = vec4( aColor, 1.0 ); } \n";
 
 
 
 
 const char* fragmentShaderSource =
 "#version 330 core                                       \n   "
+"in vec4 ourColor;                                       \n   "
 "out vec4 FragColor;                                     \n   "
 "void main(){\n                                               "
-"        FragColor = vec4(1.0f, 0.5f, 0.2f,  1.0f);}\n  ";
+"        FragColor = ourColor;}      \n  ";
 
 
 
-
+//-----------------------------------------------------------------------------
 
 void processInput(GLFWwindow*  window) 
 {
@@ -81,7 +87,7 @@ int main()
     }
 
     
-    ////----------------------------数据copy buffer--------
+    ////----------------------------数据copy buffer------------------------
     //设置渲染窗口的大小
     glViewport(0,0,800,600);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
@@ -130,9 +136,14 @@ int main()
     glAttachShader(shaderProgram,fragmentShader);
     glLinkProgram(shaderProgram);
 
-    //链接顶点属性
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    //-----------------link------------------
+    //链接顶点pos属性
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    //链接顶点vertexcolor属性
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)( 3*sizeof(float) ));
+    glEnableVertexAttribArray(1);
 
 
 
@@ -152,6 +163,15 @@ int main()
 
         //绑定EBO到   GL_ELEMENT_ARRAY_BUFFER
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
+
+        //
+        //float timeValue = glfwGetTime();
+        //float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+        //int vertexColorLocation = glGetUniformLocation(shaderProgram, "vColor");
+        //glUseProgram(shaderProgram);
+        //glUniform4f(vertexColorLocation,0, greenValue,0, 1.0f);
+
+
         //当我们渲染一个物体时要使用的着色器程序
         glUseProgram(shaderProgram);
         //glDrawArrays(GL_TRIANGLES, 0, 3);
