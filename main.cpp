@@ -78,6 +78,7 @@ int main()
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     
 
+    //创建一个shader对象  传入 路径
     Shader* testshader = new Shader("vertexSource.txt", "fragmentSource.txt");
 
 
