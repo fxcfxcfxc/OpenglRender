@@ -4,6 +4,10 @@
 #include <fstream>
 #include <sstream>
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
 	std:: ifstream vertexFile;
@@ -34,9 +38,35 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 		vertexSource = vertexString.c_str();
 		fragmentSource = fragmentString.c_str();
 
-		printf(vertexSource);
-		printf(fragmentSource);
+		//printf(vertexSource);
+		//printf(fragmentSource);
+		
 
+		//创建 vertexshader  fragmentshader 对象
+		unsigned int vertex, fragment;
+
+		vertex = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex, 1, &vertexSource, NULL);
+		glCompileShader(vertex);
+		checkCompileErrors(vertex, "VERTEX");
+
+		fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment, 1, &fragmentSource, NULL);
+		glCompileShader(fragment);
+		checkCompileErrors(fragment,"FRAGMENT");
+
+
+		// 创建一个Program对象， 并 attach上  vertex 和 fragment
+		ID = glCreateProgram();
+		glAttachShader(ID, vertex);
+		glAttachShader(ID, fragment);
+		glLinkProgram(ID);
+		checkCompileErrors(ID, "PROGRAM");
+
+
+		//使用后删除
+		glDeleteShader(vertex);
+		glDeleteShader(fragment);
 
 	}
 
@@ -50,6 +80,39 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 }
 
 
+void Shader::use()
+{
+	glUseProgram(ID);
+
+}
 
 
 
+void  Shader::checkCompileErrors(unsigned int ID, std::string type)
+{
+	int  success;
+	char infoLog[512];
+
+	if (type != "PROGRAM")
+	{
+		glGetShaderiv(ID, GL_COMPILE_STATUS, &success);
+		if (!success)
+		{
+			glGetShaderInfoLog(ID, 512, NULL, infoLog);
+			std::cout << "shader compile error: " << infoLog << std::endl;
+		}
+		
+
+
+	}
+	else
+	{
+		glGetProgramiv(ID, GL_LINK_STATUS, &success);
+		if (!success)
+		{
+			glGetProgramInfoLog(ID, 512, NULL, infoLog);
+			std:: cout << "program compile error: " << infoLog << std:: endl;
+		}
+	}
+
+}

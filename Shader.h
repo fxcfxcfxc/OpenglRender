@@ -9,6 +9,13 @@ public:
 	std:: string fragmentString;
 	const char* vertexSource;
 	const char* fragmentSource;
+	unsigned int ID;
 
+	void use();
+
+private:
+
+	//ºÏ≤‚±‡“Î
+	void checkCompileErrors(unsigned int ID,std:: string type);
 };
 
