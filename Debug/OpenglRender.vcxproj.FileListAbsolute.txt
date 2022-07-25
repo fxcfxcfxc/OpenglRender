@@ -1,1 +1,2 @@
 F:\WorkProject\OpenglRender\Debug\OpenglRender.exe
+G:\CG-Project\renderopengl\OpenglRender\Debug\OpenglRender.exe

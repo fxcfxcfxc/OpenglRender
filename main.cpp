@@ -83,7 +83,18 @@ float vertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
-
+glm::vec3 cubePositions[] = {
+  glm::vec3(0.0f,  0.0f,  0.0f),
+  glm::vec3(2.0f,  5.0f, -15.0f),
+  glm::vec3(-1.5f, -2.2f, -2.5f),
+  glm::vec3(-3.8f, -2.0f, -12.3f),
+  glm::vec3(2.4f, -0.4f, -3.5f),
+  glm::vec3(-1.7f,  3.0f, -7.5f),
+  glm::vec3(1.3f, -2.0f, -2.5f),
+  glm::vec3(1.5f,  2.0f, -2.5f),
+  glm::vec3(1.5f,  0.2f, -1.5f),
+  glm::vec3(-1.3f,  1.0f, -1.5f)
+};
 
 
 //====================================================================================
@@ -137,6 +148,9 @@ int main()
     glViewport(0,0,1600,1200);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     
+    //启动zbuffer
+    glEnable(GL_DEPTH_TEST);
+
 
     //创建一个shader对象  传入 路径
     Shader* testshader = new Shader("vertexSource.txt", "fragmentSource.txt");
@@ -260,7 +274,7 @@ int main()
         glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 
         //清空屏幕的color buffer
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 
@@ -278,21 +292,33 @@ int main()
         //绑定EBO到   GL_ELEMENT_ARRAY_BUFFER
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
 
-        //当我们渲染一个物体时要使用的着色器程序
-        testshader->use();
-        
-        glUniform1i(glGetUniformLocation(testshader->ID, "ourTexture"), 0);
-        glUniform1i(glGetUniformLocation(testshader->ID, "ourFace"), 1);
-        //glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "transform"), 1, GL_FALSE, glm:: value_ptr(trans));
-        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "modelMat"),  1, GL_FALSE,   glm:: value_ptr(modelMat));
-        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1,   GL_FALSE,   glm:: value_ptr(viewMat));
-        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1,   GL_FALSE,   glm:: value_ptr(projMat));
+
+        for (int index = 0; index<10; index++)
+        {
+            glm::mat4 modelMat2;
+            modelMat2 = glm::translate( modelMat2,  cubePositions[index] );
+            float angle = 20.0f * index;
+            modelMat2 = glm:: rotate(modelMat2, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            //当我们渲染一个物体时要使用的着色器程序
+            testshader->use();
+
+            glUniform1i(glGetUniformLocation(testshader->ID, "ourTexture"), 0);
+            glUniform1i(glGetUniformLocation(testshader->ID, "ourFace"), 1);
+            //glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "transform"), 1, GL_FALSE, glm:: value_ptr(trans));
+            glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(modelMat2));
+            glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(viewMat));
+            glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
 
 
-        //第一个参数绘制模式，第二个参数绘制定点数，第三个参数是索引类型，第四个参数 EBO中的偏移量
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        
+            //第一个参数绘制模式，第二个参数绘制定点数，第三个参数是索引类型，第四个参数 EBO中的偏移量
+            //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+            //从数组缓存中的哪一位开始绘制，一般为0.,数组中顶点的数量.
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+        }
+
         
         //
         glfwSwapBuffers(window);
