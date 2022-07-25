@@ -10,20 +10,77 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
+
+
 //=========================================模型数据信息=================================
-float vertices[] = {
-    //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
-};
+//float vertices[] = {
+//    //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
+//         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
+//         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
+//        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
+//        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+//};
+//
+
+
+
 
 unsigned int indices[] =
 {
     0,1,2,//第一个三角形
     2,3,0 //第二个三角形
 
+};
+
+
+
+
+
+float vertices[] = {
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
 
@@ -53,7 +110,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //实例化窗口对象
-    GLFWwindow* window = glfwCreateWindow(800, 600, "My OpenGl Game", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1600, 1200, "My OpenGl Game", NULL, NULL);
     if (window == NULL) 
     {
        printf("Open window failed");
@@ -77,7 +134,7 @@ int main()
     
     ////----------------------------数据copy buffer------------------------
     //设置渲染窗口的大小
-    glViewport(0,0,800,600);
+    glViewport(0,0,1600,1200);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     
 
@@ -113,16 +170,16 @@ int main()
     //-----------------VBO -》  VAO--------------------------------------
     // 将正确的属性 放入到 VAO对应的插槽数组中
     //链接顶点pos属性
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     //链接顶点vertexcolor属性
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+  /*  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);*/
 
 
     //链接顶点  UV属性
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
 
@@ -155,6 +212,7 @@ int main()
     glGenTextures(1, &TexBufferB);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D,TexBufferB);
+    stbi_set_flip_vertically_on_load(true);
     unsigned char* data2 = stbi_load("awesomeface.png", &width, &height, &nrChannel, 0);
 
     if (data2)
@@ -170,11 +228,31 @@ int main()
 
     stbi_image_free(data2);
 
+    //-----------------------------------------
+    glm::mat4 trans;
+    //注意顺序
+    //trans = glm:: translate(trans, glm:: vec3(-1.0f, 0, 0));
+    //trans = glm:: rotate(trans,glm:: radians(.0f), glm:: vec3(0.0, 0.0, 1.0f));
+    //trans = glm:: scale(trans, glm:: vec3(0.8f, 0.8f, 0.8f));
+
+    //model->world
+    glm::mat4 modelMat;
+    modelMat = glm:: rotate(modelMat, glm:: radians(-55.0f), glm:: vec3(1.0f, 0 , 0));
+
+    //world->view
+    glm::mat4 viewMat;
+    viewMat = glm:: translate(viewMat, glm:: vec3( 0, 0, -3.0f ));
+
+    //view-> clipspace
+    glm:: mat4 projMat;
+    projMat = glm:: perspective(glm::radians(45.0f), 1600.0f / 1200.0f,  0.1f, 100.0f);
 
 
     ////----------------------------------Render Loop 渲染循环-------------------------  
     while (!glfwWindowShouldClose(window))
-    {
+    {   
+        //trans = glm:: translate(trans,glm:: vec3(-0.01f, 0, 0));
+
         //获取键盘输入
         processInput(window);
 
@@ -205,10 +283,15 @@ int main()
         
         glUniform1i(glGetUniformLocation(testshader->ID, "ourTexture"), 0);
         glUniform1i(glGetUniformLocation(testshader->ID, "ourFace"), 1);
+        //glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "transform"), 1, GL_FALSE, glm:: value_ptr(trans));
+        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "modelMat"),  1, GL_FALSE,   glm:: value_ptr(modelMat));
+        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1,   GL_FALSE,   glm:: value_ptr(viewMat));
+        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1,   GL_FALSE,   glm:: value_ptr(projMat));
 
 
         //第一个参数绘制模式，第二个参数绘制定点数，第三个参数是索引类型，第四个参数 EBO中的偏移量
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
         
         
         //
