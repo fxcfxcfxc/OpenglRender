@@ -13,7 +13,7 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
-
+#include "Camera.h"
 
 //=========================================模型数据信息=================================
 //float vertices[] = {
@@ -249,16 +249,21 @@ int main()
     //trans = glm:: rotate(trans,glm:: radians(.0f), glm:: vec3(0.0, 0.0, 1.0f));
     //trans = glm:: scale(trans, glm:: vec3(0.8f, 0.8f, 0.8f));
 
+    //Camera myCamera(glm::vec3(0, 0, 8.0f), glm::vec3(0, 0, 0), glm::vec3(0, 1.0f, 0));
+    Camera myCamera( glm::vec3(0, 0, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f,.0) );
+
+
     //model->world
     glm::mat4 modelMat;
     modelMat = glm:: rotate(modelMat, glm:: radians(-55.0f), glm:: vec3(1.0f, 0 , 0));
 
     //world->view
     glm::mat4 viewMat;
-    viewMat = glm:: translate(viewMat, glm:: vec3( 0, 0, -3.0f ));
+    //viewMat = glm:: translate(viewMat, glm:: vec3( 0, 0, -3.0f ));
+    viewMat = myCamera.GetViewMatrix();
 
     //view-> clipspace
-    glm:: mat4 projMat;
+    glm:: mat4 projMat;  
     projMat = glm:: perspective(glm::radians(45.0f), 1600.0f / 1200.0f,  0.1f, 100.0f);
 
 
