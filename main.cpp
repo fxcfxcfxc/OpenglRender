@@ -96,6 +96,11 @@ glm::vec3 cubePositions[] = {
   glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
+float lastX;
+float lastY;
+bool firstMouse = true;
+
+
 
 //====================================================================================
 
@@ -109,6 +114,29 @@ void processInput(GLFWwindow*  window)
     }
 
 }
+
+
+void mouse_callback(GLFWwindow* window, double xPos, double yPos)
+{
+    if (firstMouse == true)
+    {
+        lastX = xPos;
+        lastY = yPos;
+        firstMouse = false;
+
+    }
+
+    float deltaX, deltaY; 
+    deltaX = xPos - lastX;
+    deltaY = yPos - lastY;
+
+    lastX = xPos;
+    lastY = yPos;
+
+    printf("%f \n", xPos);
+}
+
+
 
 
 int main() 
@@ -129,7 +157,8 @@ int main()
        return -1;
     }
     glfwMakeContextCurrent(window);
-
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
 
     //
     glewExperimental = true;
@@ -143,7 +172,7 @@ int main()
     }
 
     
-    ////----------------------------数据copy buffer------------------------
+    ////---------------------------- buffer------------------------
     //设置渲染窗口的大小
     glViewport(0,0,1600,1200);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);

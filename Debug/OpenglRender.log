@@ -1,5 +1,11 @@
 ﻿  main.cpp
+F:\WorkProject\OpenglRender\main.cpp(123,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+F:\WorkProject\OpenglRender\main.cpp(124,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+F:\WorkProject\OpenglRender\main.cpp(129,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+F:\WorkProject\OpenglRender\main.cpp(130,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+F:\WorkProject\OpenglRender\main.cpp(132,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+F:\WorkProject\OpenglRender\main.cpp(133,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-glew32s.lib(glew.obj) : warning LNK4099: PDB '' was not found with 'glew32s.lib(glew.obj)' or at ''; linking object as if no debug info
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'F:\WorkProject\OpenglRender\Debug\vc120.pdb'; linking object as if no debug info
   OpenglRender.vcxproj -> F:\WorkProject\OpenglRender\Debug\OpenglRender.exe

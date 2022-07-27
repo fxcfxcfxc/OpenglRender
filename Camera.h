@@ -20,8 +20,14 @@ public:
 	glm::vec3 Right;
 	glm::vec3 Up;
 	glm::vec3 WorldUp;
+	float Pitch;
+	float Yaw;
 
 	glm::mat4 GetViewMatrix();
 
+
+
+private:
+	void UpdateCameraVectors();
 
 }; 
