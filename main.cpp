@@ -104,6 +104,8 @@ bool firstMouse = true;
 
 //====================================================================================
 
+Camera myCamera(glm::vec3(0, 0, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f, .0));
+
 void processInput(GLFWwindow*  window) 
 {
     if ( glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS )
@@ -111,6 +113,19 @@ void processInput(GLFWwindow*  window)
 
         glfwSetWindowShouldClose(window, true);
 
+    }
+
+    if ( glfwGetKey(window,GLFW_KEY_W) == GLFW_PRESS )
+    {
+        myCamera.speedZ = 1.0f;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        myCamera.speedZ = -1.0f;
+    }
+    else
+    {
+        myCamera.speedZ = 0;
     }
 
 }
@@ -133,7 +148,9 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos)
     lastX = xPos;
     lastY = yPos;
 
-    printf("%f \n", xPos);
+    myCamera.ProcessMouseMovement(deltaX, deltaY);
+
+   // printf("%f \n", xPos);
 }
 
 
@@ -271,7 +288,7 @@ int main()
 
     stbi_image_free(data2);
 
-    //-----------------------------------------
+    //-----------------------------------------Ïà»ú
     glm::mat4 trans;
     //×¢ÒâË³Ðò
     //trans = glm:: translate(trans, glm:: vec3(-1.0f, 0, 0));
@@ -279,7 +296,7 @@ int main()
     //trans = glm:: scale(trans, glm:: vec3(0.8f, 0.8f, 0.8f));
 
     //Camera myCamera(glm::vec3(0, 0, 8.0f), glm::vec3(0, 0, 0), glm::vec3(0, 1.0f, 0));
-    Camera myCamera( glm::vec3(0, 0, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f,.0) );
+    //Camera myCamera( glm::vec3(0, 0, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f,.0) );
 
 
     //model->world
@@ -289,7 +306,7 @@ int main()
     //world->view
     glm::mat4 viewMat;
     //viewMat = glm:: translate(viewMat, glm:: vec3( 0, 0, -3.0f ));
-    viewMat = myCamera.GetViewMatrix();
+    //viewMat = myCamera.GetViewMatrix();
 
     //view-> clipspace
     glm:: mat4 projMat;  
@@ -327,6 +344,8 @@ int main()
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
 
 
+        viewMat = myCamera.GetViewMatrix();
+
         for (int index = 0; index<10; index++)
         {
             glm::mat4 modelMat2;
@@ -357,7 +376,7 @@ int main()
         //
         glfwSwapBuffers(window);
         glfwPollEvents();
-
+        myCamera.UpdateCameraPos();
 
     }
 

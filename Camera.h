@@ -22,10 +22,11 @@ public:
 	glm::vec3 WorldUp;
 	float Pitch;
 	float Yaw;
+	float speedZ;
 
 	glm::mat4 GetViewMatrix();
-
-
+	void UpdateCameraPos();
+	void ProcessMouseMovement(float deltaX, float deltaY);
 
 private:
 	void UpdateCameraVectors();
