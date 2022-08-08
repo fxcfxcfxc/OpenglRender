@@ -24,6 +24,9 @@
     <ClCompile Include="Src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Shader.h">
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -45,13 +51,13 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="MyImage.png">
+    <Image Include="resource\MyImage.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="container.jpg">
+    <Image Include="resource\container.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="awesomeface.png">
+    <Image Include="resource\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -6,6 +6,18 @@ in vec3 Normal;
 out vec4 FragColor;
 
 
+struct Material{
+vec3 ambient;
+vec3 diffuse;
+vec3 specular;
+
+float shininess;
+};
+
+
+
+uniform Material material;
+
 //uniform sampler2D ourTexture;
 //uniform sampler2D ourFace;
 uniform vec3 objColor;
@@ -19,13 +31,20 @@ void main()
 {                                    
         //FragColor = vertexColor;
         //FragColor = mix( texture(ourTexture, TexCoord),texture(ourFace, TexCoord) , 0.2) *vec4( ambientColor,1.0);
+
+        //diffse
         vec3 lDir = normalize(LightPos -PosWS.xyz );
         vec3 lambert = max(0,dot(Normal , lDir)) * LightColor;
-        vec3 vDir =  normalize( cameraPos - PosWS.xyz ) ;
+ 
 
         //specualr
-        vec3 rDir = normalize( reflect(-lDir,Normal) ) ; 
+        vec3 vDir =  normalize( cameraPos - PosWS.xyz );
+        vec3 rDir =  normalize( reflect(-lDir,Normal) ); 
+        vec3 specular = pow( max(dot(rDir, vDir),0 ) ,material.shininess) * LightColor.rgb * material.specular;
 
-        FragColor = vec4( (lambert + ambientColor ) * objColor, 1.0);
+
+        //ambient
+        vec3 ambient  = material.ambient *  ambientColor;
+        FragColor = vec4( (lambert + ambientColor + specular) * objColor, 1.0);
         
 }

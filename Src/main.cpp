@@ -15,6 +15,8 @@
 #include <gtc/type_ptr.hpp>
 #include "Camera.h"
 
+
+#include "Material.h"
 //=========================================模型数据信息=================================
 
 
@@ -251,6 +253,15 @@ int main()
 #pragma endregion 
 
 
+
+//--------------------------Creat Material
+Material* myMaterial = new Material(testshader,
+                                        glm::vec3 (1.0f, 1.0f, 1.0f),
+                                        glm::vec3(1.0f,1.0f,1.0f),
+                                        glm::vec3(1.0f, 1.0f, 1.0f),
+                                        32.0f);
+
+
 #pragma region Init and Load Models to VAO VBO
     //----------------------------------生成VAO对象，VAO就像是属性列表
     unsigned int VAO;
@@ -301,10 +312,10 @@ int main()
 
 #pragma region  LoadTexture
     unsigned int TexBufferA;
-    TexBufferA = LoadImageToGPU("container.jpg",GL_RGB, GL_RGB, 0 );
+    TexBufferA = LoadImageToGPU("resource/container.jpg",GL_RGB, GL_RGB, 0 );
 
     unsigned int TexBufferB;
-    TexBufferB = LoadImageToGPU("awesomeface.png",GL_RGBA, GL_RGBA, 0);
+    TexBufferB = LoadImageToGPU("resource/awesomeface.png",GL_RGBA, GL_RGBA, 0);
 
 #pragma endregion
 
@@ -370,10 +381,16 @@ int main()
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(viewMat));
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
             glUniform3f(glGetUniformLocation(testshader->ID, "objColor"),1.0f, 0.5f, 0.31f );
-            glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 1.0f, 1.0f, 1.0f);
-            glUniform3f(glGetUniformLocation(testshader->ID, "LightPos"), 10.0f, 10.0f, 5.0f);
-            glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"), 1.0f, 1.0f, 1.0f);
+            glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.2f, 0.1f, 0.01f);
+            glUniform3f(glGetUniformLocation(testshader->ID, "LightPos"), 10.0f, 10.0f, -5.0f);
+            glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"),1.5f, 1.3f, 1.3f);
             glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
+
+            //
+            myMaterial->shader->SetUniform3f("material.ambient", myMaterial->ambient);
+            myMaterial->shader->SetUniform3f("material.diffuse", myMaterial->diffuse);
+            myMaterial->shader->SetUniform3f("material.specular", myMaterial->specular);
+            myMaterial->shader->SetUniform1f("material.shininess",myMaterial->shininess);
 
 
             //Set Model  绑上下文VAO 

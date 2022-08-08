@@ -151,11 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Material.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\Camera.h" />
     <ClInclude Include="Src\Shader.h" />
     <ClInclude Include="Src\stb_image.h" />
@@ -165,9 +167,9 @@
     <Text Include="Shader\vertexSource.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="awesomeface.png" />
-    <Image Include="container.jpg" />
-    <Image Include="MyImage.png" />
+    <Image Include="resource\awesomeface.png" />
+    <Image Include="resource\container.jpg" />
+    <Image Include="resource\MyImage.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

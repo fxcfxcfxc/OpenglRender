@@ -20,7 +20,7 @@ void main()
 {                                            
         gl_Position =  projMat * viewMat * modelMat * vec4(aPos,  1.0); 
         PosWS = modelMat * vec4(aPos,1.0);
-        Normal =  mat3(modelMat) * aNormal;
+        Normal =  mat3(transpose( inverse(modelMat)) ) * aNormal;
         //vertexColor = vec4( aColor, 1.0 );
         //TexCoord = aTexCoord;
 }

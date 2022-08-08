@@ -86,7 +86,17 @@ void Shader::use()
 
 }
 
+void Shader::SetUniform3f(const char* Name, glm::vec3 Param)
+{
+	glUniform3f(glGetUniformLocation(ID, Name),Param.x, Param.y, Param.z );
 
+}
+
+
+void Shader::SetUniform1f(const char* Name, float Param)
+{
+	glUniform1f(glGetUniformLocation(ID, Name),Param );
+}
 
 
 void  Shader::checkCompileErrors(unsigned int ID, std::string type)
