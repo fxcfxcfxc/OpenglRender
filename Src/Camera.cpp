@@ -41,7 +41,7 @@ void Camera::UpdateCameraVectors()
 	Forward.y = glm::sin(Pitch);
 	Forward.z = glm::cos(Pitch) * glm::cos(Yaw);
 	Right = glm::normalize(glm::cross(Forward, WorldUp));
-	Up = glm::normalize(glm::cross(Forward, Right));
+	Up = glm::normalize(glm::cross(Right, Forward));
 }
 
 
@@ -55,7 +55,8 @@ void Camera::ProcessMouseMovement(float deltaX, float deltaY)
 
 }
 
+
 void Camera::UpdateCameraPos()
 {
-	Position += Forward * speedZ * 0.02f;
+	Position += Forward * speedZ * 0.02f + Right * speedX * 0.02f + Up * speedY * 0.01f;
 }

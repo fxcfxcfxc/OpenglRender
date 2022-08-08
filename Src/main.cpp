@@ -78,6 +78,7 @@ glm::vec3 cubePositions[] = {
 #pragma endregion
 
 
+//相机
 #pragma region Camera
 
 Camera myCamera(glm::vec3(0, 0, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f, .0));
@@ -99,6 +100,8 @@ void processInput(GLFWwindow*  window)
 
     }
 
+
+    // w s
     if ( glfwGetKey(window,GLFW_KEY_W) == GLFW_PRESS )
     {
         myCamera.speedZ = 1.0f;
@@ -111,6 +114,39 @@ void processInput(GLFWwindow*  window)
     {
         myCamera.speedZ = 0;
     }
+
+
+    // a d
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        myCamera.speedX = 1.0f;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        myCamera.speedX = -1.0f;
+    }
+    else
+    {
+        myCamera.speedX = 0;
+    }
+
+    // q e 
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    {
+        myCamera.speedY = 1.0f;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    {
+        myCamera.speedY = -1.0f;
+    }
+    else
+    {
+        myCamera.speedY = 0;
+    }
+
+
+
+
 
 }
 
@@ -336,6 +372,9 @@ int main()
             glUniform3f(glGetUniformLocation(testshader->ID, "objColor"),1.0f, 0.5f, 0.31f );
             glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 1.0f, 1.0f, 1.0f);
             glUniform3f(glGetUniformLocation(testshader->ID, "LightPos"), 10.0f, 10.0f, 5.0f);
+            glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"), 1.0f, 1.0f, 1.0f);
+            glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
+
 
             //Set Model  绑上下文VAO 
             glBindVertexArray(VAO);

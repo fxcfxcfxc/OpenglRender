@@ -23,6 +23,8 @@ public:
 	float Pitch;
 	float Yaw;
 	float speedZ;
+	float speedX = 0;
+	float speedY = 0;
 
 	glm::mat4 GetViewMatrix();
 	void UpdateCameraPos();
