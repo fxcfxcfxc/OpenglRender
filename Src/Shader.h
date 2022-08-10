@@ -17,6 +17,8 @@ public:
 	void use();
 	void SetUniform3f(const char* Name, glm::vec3 param);
 	void SetUniform1f(const char* Name, float Param);
+	void SetUniform1i(const char* Name, int slot);
+
 
 private:
 

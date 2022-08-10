@@ -1,23 +1,20 @@
 #version 330 core                                      
 //in vec4 vertexColor;
-//in vec2 TexCoord;
+in vec2 TexCoord;
 in vec4 PosWS;
 in vec3 Normal;
-out vec4 FragColor;
 
 
 struct Material{
 vec3 ambient;
-vec3 diffuse;
+sampler2D diffuse;
 vec3 specular;
-
 float shininess;
 };
 
 
 
 uniform Material material;
-
 //uniform sampler2D ourTexture;
 //uniform sampler2D ourFace;
 uniform vec3 objColor;
@@ -27,12 +24,17 @@ uniform vec3 LightColor;
 uniform vec3 cameraPos;
 
 
+
+out vec4 FragColor;
+
+
 void main()
 {                                    
         //FragColor = vertexColor;
         //FragColor = mix( texture(ourTexture, TexCoord),texture(ourFace, TexCoord) , 0.2) *vec4( ambientColor,1.0);
 
         //diffse
+        vec3  diffuseTexture = texture(material.diffuse, TexCoord).rgb;
         vec3 lDir = normalize(LightPos -PosWS.xyz );
         vec3 lambert = max(0,dot(Normal , lDir)) * LightColor;
  
@@ -45,6 +47,6 @@ void main()
 
         //ambient
         vec3 ambient  = material.ambient *  ambientColor;
-        FragColor = vec4( (lambert + ambientColor + specular) * objColor, 1.0);
+        FragColor = vec4( (lambert + ambientColor + specular) * diffuseTexture * objColor, 1.0);
         
 }
