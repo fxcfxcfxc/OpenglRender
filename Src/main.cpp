@@ -251,16 +251,16 @@ int main()
 #pragma region Init Shader Program
     //创建一个shader对象  传入 路径
     Shader* testshader = new Shader("Shader/vertexSource.vert", "Shader/fragmentSource.frag");
-#pragma endregion 
+#pragma endregion  
 
 
-#pragma region Init Material
+#pragma region Init Material  Data
 //--------------------------Creat Material
 Material* myMaterial = new Material(testshader,
-                                        LoadImageToGPU("resource/awesomeface.png", GL_RGBA, GL_RGBA, 0),
-                                        glm::vec3(1.0f,1.0f,1.0f),
+                                        LoadImageToGPU("resource/container2.png", GL_RGBA, GL_RGBA, Shader::Diffuse),
+                                        LoadImageToGPU("resource/container2specular.png", GL_RGBA, GL_RGBA, Shader::Specular),
                                         glm::vec3(1.0f, 1.0f, 1.0f),
-                                        32.0f);
+                                        64.0f);
 #pragma endregion 
 
 #pragma region Init and Load Models to VAO VBO
@@ -371,10 +371,10 @@ Material* myMaterial = new Material(testshader,
             testshader->use();
 
             //Set Material  -> Texture
-            //glActiveTexture(GL_TEXTURE0);
-            //glBindTexture(GL_TEXTURE_2D, TexBufferA);
-            //glActiveTexture(GL_TEXTURE1);
-            //glBindTexture(GL_TEXTURE_2D, TexBufferB);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, myMaterial->diffuse);
+            glActiveTexture(GL_TEXTURE0 +1);
+            glBindTexture(GL_TEXTURE_2D, myMaterial->specular);
 
 
             //Set Material -> Uniforms
@@ -384,31 +384,33 @@ Material* myMaterial = new Material(testshader,
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(modelMat));
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(viewMat));
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
-            glUniform3f(glGetUniformLocation(testshader->ID, "objColor"),1.0f, 0.5f, 0.31f );
-            glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.2f, 0.1f, 0.01f);
+            glUniform3f(glGetUniformLocation(testshader->ID, "objColor"),1.0f, 1.0f, 1.0f );
+            glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.3f, 0.3f, 0.3f);
             glUniform3f(glGetUniformLocation(testshader->ID, "LightPos"), 10.0f, 10.0f, -5.0f);
-            glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"),1.5f, 1.3f, 1.3f);
+            glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"),1.5f, 1.5f, 1.5f);
             glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
 
             //
             myMaterial->shader->SetUniform3f("material.ambient", myMaterial->ambient);
-            myMaterial->shader->SetUniform1i("material.diffuse", 0);
-            //myMaterial->shader->SetUniform3f("material.diffuse", myMaterial->diffuse);
-            myMaterial->shader->SetUniform3f("material.specular", myMaterial->specular);
+            myMaterial->shader->SetUniform1i("material.diffuse", Shader::Diffuse);
+            myMaterial->shader->SetUniform1i("material.specular", Shader::Specular);
             myMaterial->shader->SetUniform1f("material.shininess",myMaterial->shininess);
+            //myMaterial->shader->SetUniform3f("material.diffuse", myMaterial->diffuse);
+            //myMaterial->shader->SetUniform3f("material.specular", myMaterial->specular);
 
 
             //Set Model  绑上下文VAO 
             glBindVertexArray(VAO);
 
 
-            //第一个参数绘制模式，第二个参数绘制定点数，第三个参数是索引类型，第四个参数 EBO中的偏移量
-            //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-
             //DrawCall
             //从数组缓存中的哪一位开始绘制，一般为0.,数组中顶点的数量.
             glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+            //第一个参数绘制模式，第二个参数绘制定点数，第三个参数是索引类型，第四个参数 EBO中的偏移量
+            //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 
 
         }

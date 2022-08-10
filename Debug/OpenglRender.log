@@ -1,11 +1,11 @@
-﻿  main.cpp
+﻿  Material.cpp
+  Shader.cpp
+  main.cpp
 F:\WorkProject\OpenglRender\Src\main.cpp(161,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 F:\WorkProject\OpenglRender\Src\main.cpp(162,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 F:\WorkProject\OpenglRender\Src\main.cpp(168,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 F:\WorkProject\OpenglRender\Src\main.cpp(169,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 F:\WorkProject\OpenglRender\Src\main.cpp(171,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 F:\WorkProject\OpenglRender\Src\main.cpp(172,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-glew32s.lib(glew.obj) : warning LNK4099: PDB '' was not found with 'glew32s.lib(glew.obj)' or at ''; linking object as if no debug info
+  Generating Code...
   OpenglRender.vcxproj -> F:\WorkProject\OpenglRender\Debug\OpenglRender.exe

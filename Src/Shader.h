@@ -20,6 +20,12 @@ public:
 	void SetUniform1i(const char* Name, int slot);
 
 
+	enum Slot
+	{
+		Diffuse,
+		Specular
+	};
+
 private:
 
 	//ºÏ≤‚±‡“Î

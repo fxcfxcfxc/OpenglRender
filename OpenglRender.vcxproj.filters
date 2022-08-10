@@ -60,5 +60,11 @@
     <Image Include="resource\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resource\container2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\container2specular.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

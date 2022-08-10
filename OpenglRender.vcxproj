@@ -169,6 +169,8 @@
   <ItemGroup>
     <Image Include="resource\awesomeface.png" />
     <Image Include="resource\container.jpg" />
+    <Image Include="resource\container2.png" />
+    <Image Include="resource\container2specular.png" />
     <Image Include="resource\MyImage.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
