@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\LightPoint.cpp" />
     <ClCompile Include="Src\LightDirectional.cpp" />
     <ClCompile Include="Src\Material.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\LightPoint.h" />
     <ClInclude Include="Src\LightDirectional.h" />
     <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\Camera.h" />

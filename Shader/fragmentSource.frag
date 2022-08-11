@@ -29,7 +29,8 @@ void main()
 
         //diffse
         vec3  diffuseTexture = texture(material.diffuse, TexCoord).rgb;
-        vec3 lDir =LightDir;
+        vec3 lDir = normalize( LightPos - PosWS.xyz );
+        //vec3 lDir =LightDir;
         vec3 lambert = max(0,dot(Normal , lDir)) * LightColor * diffuseTexture;
  
 

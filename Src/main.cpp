@@ -15,7 +15,7 @@
 #include <gtc/type_ptr.hpp>
 #include "Camera.h"
 #include "LightDirectional.h"
-
+#include "LightPoint.h"
 #include "Material.h"
 //=========================================模型数据信息=================================
 
@@ -178,7 +178,7 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos)
 #pragma endregion
 
 
-LightDirectional* lightDir = new LightDirectional(glm::vec3(0,0,0), glm::vec3(glm::radians(45.0f),0,0), glm::vec3(1.0f, 0, 0));
+LightPoint* lightDir = new LightPoint(glm::vec3(1.0f, 1.0f ,-1.0f), glm::vec3(glm::radians(45.0f),0,0));
 
 
 unsigned int LoadImageToGPU(const char* FileName,GLint  InternalFormat,GLenum Format, int TextureSlot)
@@ -388,7 +388,7 @@ Material* myMaterial = new Material(testshader,
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
             glUniform3f(glGetUniformLocation(testshader->ID, "objColor"),1.0f, 1.0f, 1.0f );
             glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.1f, 0.1f, 0.1f);
-            glUniform3f(glGetUniformLocation(testshader->ID, "LightPos"), 10.0f, 10.0f, -5.0f);
+            glUniform3f(glGetUniformLocation(testshader->ID, "LightPos"), lightDir->position.x, lightDir->position.y, lightDir->position.z);
             glUniform3f(glGetUniformLocation(testshader->ID, "LightDir"), lightDir->direction.x, lightDir->direction.y, lightDir->direction.z);
             glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"),lightDir->color.x, lightDir->color.y, lightDir->color.z);
             glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
