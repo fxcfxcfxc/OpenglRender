@@ -151,12 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\LightDirectional.cpp" />
     <ClCompile Include="Src\Material.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\LightDirectional.h" />
     <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\Camera.h" />
     <ClInclude Include="Src\Shader.h" />

@@ -4,7 +4,6 @@ in vec2 TexCoord;
 in vec4 PosWS;
 in vec3 Normal;
 
-
 struct Material{
 vec3 ambient;
 sampler2D diffuse;
@@ -12,17 +11,13 @@ sampler2D specular;
 float shininess;
 };
 
-
-
 uniform Material material;
-//uniform sampler2D ourTexture;
-//uniform sampler2D ourFace;
 uniform vec3 objColor;
 uniform vec3 ambientColor;
 uniform vec3 LightPos;
 uniform vec3 LightColor;
 uniform vec3 cameraPos;
-
+uniform vec3 LightDir;
 
 
 out vec4 FragColor;
@@ -30,12 +25,11 @@ out vec4 FragColor;
 
 void main()
 {                                    
-        //FragColor = vertexColor;
-        //FragColor = mix( texture(ourTexture, TexCoord),texture(ourFace, TexCoord) , 0.2) *vec4( ambientColor,1.0);
+
 
         //diffse
         vec3  diffuseTexture = texture(material.diffuse, TexCoord).rgb;
-        vec3 lDir = normalize(LightPos -PosWS.xyz );
+        vec3 lDir =LightDir;
         vec3 lambert = max(0,dot(Normal , lDir)) * LightColor * diffuseTexture;
  
 
