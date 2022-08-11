@@ -12,6 +12,8 @@ public:
 	glm::vec3 direction = glm::vec3(0, 0, 1.0f);
 	glm::vec3 color;
 	
-
+	float constant;
+	float linear;
+	float quadratic;
 };
 

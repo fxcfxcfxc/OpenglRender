@@ -82,13 +82,13 @@ glm::vec3 cubePositions[] = {
 
 
 
-#pragma region Camera
+#pragma region  Create Camera
 
 Camera myCamera(glm::vec3(0, 0, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f, .0));
 #pragma endregion
 
 
-#pragma region Camera Declare
+#pragma region Camera  Update Declare
 float lastX;
 float lastY;
 bool firstMouse = true;
@@ -178,7 +178,12 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos)
 #pragma endregion
 
 
-LightPoint* lightDir = new LightPoint(glm::vec3(1.0f, 1.0f ,-1.0f), glm::vec3(glm::radians(45.0f),0,0));
+
+#pragma region Init Light
+LightPoint* lightDir = new LightPoint(glm::vec3(1.0f, 1.0f ,-1.0f), glm::vec3(glm::radians(45.0f),0,0), glm::vec3(3.0f,2.0f,2.0f) );
+
+#pragma endregion
+
 
 
 unsigned int LoadImageToGPU(const char* FileName,GLint  InternalFormat,GLenum Format, int TextureSlot)
@@ -347,7 +352,7 @@ Material* myMaterial = new Material(testshader,
         processInput(window);
 
         //设置用来 清空屏幕的 颜色
-        glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         //清空屏幕的color buffer
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -392,6 +397,9 @@ Material* myMaterial = new Material(testshader,
             glUniform3f(glGetUniformLocation(testshader->ID, "LightDir"), lightDir->direction.x, lightDir->direction.y, lightDir->direction.z);
             glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"),lightDir->color.x, lightDir->color.y, lightDir->color.z);
             glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.constant"), lightDir->constant);
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.linear"), lightDir->linear);
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.quadratic"), lightDir->quadratic);
 
             //
             myMaterial->shader->SetUniform3f("material.ambient", myMaterial->ambient);

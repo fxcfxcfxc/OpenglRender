@@ -11,7 +11,18 @@ sampler2D specular;
 float shininess;
 };
 
+
+struct LightPoint{
+
+float constant;
+float linear;
+float quadratic;
+};
+
+
 uniform Material material;
+uniform LightPoint lightP;
+
 uniform vec3 objColor;
 uniform vec3 ambientColor;
 uniform vec3 LightPos;
@@ -24,9 +35,11 @@ out vec4 FragColor;
 
 
 void main()
-{                                    
+{             
+        float dis = length( LightPos - PosWS.xyz ) ;
 
-
+        float attenuation =   1.0/ ( lightP.constant + lightP.linear * dis + lightP.quadratic * dis *dis);
+               
         //diffse
         vec3  diffuseTexture = texture(material.diffuse, TexCoord).rgb;
         vec3 lDir = normalize( LightPos - PosWS.xyz );
@@ -42,8 +55,8 @@ void main()
 
 
         //ambient
-        vec3 ambient  = material.ambient *  ambientColor * diffuseTexture;
+        vec3 ambient  =   ambientColor * diffuseTexture;
 
-        FragColor = vec4( (lambert + ambient + specular)* objColor, 1.0);
+        FragColor = vec4( ( ambient + (lambert  + specular )* attenuation )* objColor, 1.0);
         
 }
