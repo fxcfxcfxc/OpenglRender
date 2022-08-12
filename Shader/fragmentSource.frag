@@ -20,6 +20,13 @@ float quadratic;
 };
 
 
+struct LightSpot{
+float cosAngle;
+
+};
+
+uniform LightSpot lightSpot;
+
 uniform Material material;
 uniform LightPoint lightP;
 
@@ -57,6 +64,18 @@ void main()
         //ambient
         vec3 ambient  =   ambientColor * diffuseTexture;
 
-        FragColor = vec4( ( ambient + (lambert  + specular )* attenuation )* objColor, 1.0);
+        //SpotLight, cosAngle
+        float cosTheta = dot( normalize (PosWS.xyz - LightPos), -1 * LightDir );
+        if(cosTheta > lightSpot.cosAngle)
+        {               
+             FragColor = vec4( ( ambient + lambert  + specular )* objColor, 1.0);
+       
+        }
+        else{
+           FragColor = vec4( ambient  * objColor, 1.0);
+        }
+
+
+   
         
 }

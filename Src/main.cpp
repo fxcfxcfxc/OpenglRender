@@ -17,6 +17,7 @@
 #include "LightDirectional.h"
 #include "LightPoint.h"
 #include "Material.h"
+#include "LightSpot.h"
 //=========================================模型数据信息=================================
 
 
@@ -180,7 +181,7 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos)
 
 
 #pragma region Init Light
-LightPoint* lightDir = new LightPoint(glm::vec3(1.0f, 1.0f ,-1.0f), glm::vec3(glm::radians(45.0f),0,0), glm::vec3(3.0f,2.0f,2.0f) );
+LightSpot* lightDir = new LightSpot(glm::vec3(0.0f, 5.0f ,0.0f), glm::vec3(glm::radians(90.0f),0,0), glm::vec3(3.0f,2.0f,2.0f) );
 
 #pragma endregion
 
@@ -397,9 +398,10 @@ Material* myMaterial = new Material(testshader,
             glUniform3f(glGetUniformLocation(testshader->ID, "LightDir"), lightDir->direction.x, lightDir->direction.y, lightDir->direction.z);
             glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"),lightDir->color.x, lightDir->color.y, lightDir->color.z);
             glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.constant"), lightDir->constant);
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.linear"), lightDir->linear);
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.quadratic"), lightDir->quadratic);
+            //glUniform1f(glGetUniformLocation(testshader->ID, "lightP.constant"), lightDir->constant);
+            //glUniform1f(glGetUniformLocation(testshader->ID, "lightP.linear"), lightDir->linear);
+            //glUniform1f(glGetUniformLocation(testshader->ID, "lightP.quadratic"), lightDir->quadratic);
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightSpot.cosAngle"), lightDir->cosAngle);
 
             //
             myMaterial->shader->SetUniform3f("material.ambient", myMaterial->ambient);
