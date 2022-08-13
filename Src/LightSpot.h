@@ -14,7 +14,8 @@ public:
 	glm::vec3 direction = glm::vec3(0, 0, 1.0f);
 	glm::vec3 color;
 
-	float cosAngle = 0.9f;
+	float cosPhyInner = 0.9f;
+	float cosPhyOut = 0.85f;
 
 };
 

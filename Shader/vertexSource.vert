@@ -13,14 +13,14 @@ uniform mat4 projMat;
 //Êä³ö
 //out vec4 vertexColor;
 out vec2 TexCoord;
-out vec3 Normal;
-out vec4 PosWS;
+out vec3 nDirWS;
+out vec3 posWS;
 
 void main()
 {                                            
         gl_Position =  projMat * viewMat * modelMat * vec4(aPos,  1.0); 
-        PosWS = modelMat * vec4(aPos,1.0);
-        Normal =  mat3(transpose( inverse(modelMat)) ) * aNormal;
+        posWS = (modelMat * vec4(aPos,1.0) ) .xyz;
+        nDirWS =  mat3(transpose( inverse(modelMat)) ) * aNormal;
         //vertexColor = vec4( aColor, 1.0 );
         TexCoord = aTexCoord;
 }

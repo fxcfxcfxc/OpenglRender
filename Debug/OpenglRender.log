@@ -1,10 +1,8 @@
-﻿  LightSpot.cpp
-  main.cpp
-F:\WorkProject\OpenglRender\Src\main.cpp(162,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-F:\WorkProject\OpenglRender\Src\main.cpp(163,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-F:\WorkProject\OpenglRender\Src\main.cpp(169,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-F:\WorkProject\OpenglRender\Src\main.cpp(170,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-F:\WorkProject\OpenglRender\Src\main.cpp(172,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-F:\WorkProject\OpenglRender\Src\main.cpp(173,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-  OpenglRender.vcxproj -> F:\WorkProject\OpenglRender\Debug\OpenglRender.exe
+﻿  main.cpp
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(162,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(163,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(169,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(170,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(172,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(173,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  OpenglRender.vcxproj -> G:\CG-Project\renderopengl\OpenglRender\Debug\OpenglRender.exe

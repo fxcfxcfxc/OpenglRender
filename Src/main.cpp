@@ -181,7 +181,21 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos)
 
 
 #pragma region Init Light
-LightSpot* lightDir = new LightSpot(glm::vec3(0.0f, 5.0f ,0.0f), glm::vec3(glm::radians(90.0f),0,0), glm::vec3(3.0f,2.0f,2.0f) );
+
+//实例化平行光
+LightDirectional * lightD = new LightDirectional(glm::vec3(0.0f, 4.0f ,0.0f),
+                                                 glm::vec3(glm::radians(45.0f),0,0),
+                                                 glm::vec3(1.0f, 1.0f, 1.0f));
+
+//实例化点光
+LightPoint* lightP = new LightPoint(glm::vec3(0.2f, -2.0f, 0.0f),
+                                    glm::vec3(glm::radians(90.0f), 0, 0), 
+                                    glm::vec3(3.0f, 1.0f, 0.0f));
+
+//实例化聚光灯
+LightSpot* lightS = new LightSpot(glm::vec3(2.0f, 4.0f, 2.0f),
+                                  glm::vec3(glm::radians(90.0f), 0, 0),
+                                  glm::vec3(1.0f, 1.0f, 2.0f));
 
 #pragma endregion
 
@@ -316,7 +330,6 @@ Material* myMaterial = new Material(testshader,
 
 
 #pragma endregion
-
  
 
 #pragma region  LoadTexture
@@ -353,9 +366,9 @@ Material* myMaterial = new Material(testshader,
         processInput(window);
 
         //设置用来 清空屏幕的 颜色
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-        //清空屏幕的color buffer
+        //清空屏幕的color buffer ,DEPTH_BUFFER
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -385,31 +398,46 @@ Material* myMaterial = new Material(testshader,
             glBindTexture(GL_TEXTURE_2D, myMaterial->specular);
 
 
-            //Set Material -> Uniforms
-            //glUniform1i(glGetUniformLocation(testshader->ID, "ourTexture"), 0);
-            //glUniform1i(glGetUniformLocation(testshader->ID, "ourFace"), 1);
+            //=======Set Material -> Uniforms
             //glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "transform"), 1, GL_FALSE, glm:: value_ptr(trans));
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(modelMat));
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(viewMat));
             glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
-            glUniform3f(glGetUniformLocation(testshader->ID, "objColor"),1.0f, 1.0f, 1.0f );
-            glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.1f, 0.1f, 0.1f);
-            glUniform3f(glGetUniformLocation(testshader->ID, "LightPos"), lightDir->position.x, lightDir->position.y, lightDir->position.z);
-            glUniform3f(glGetUniformLocation(testshader->ID, "LightDir"), lightDir->direction.x, lightDir->direction.y, lightDir->direction.z);
-            glUniform3f(glGetUniformLocation(testshader->ID, "LightColor"),lightDir->color.x, lightDir->color.y, lightDir->color.z);
-            glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
-            //glUniform1f(glGetUniformLocation(testshader->ID, "lightP.constant"), lightDir->constant);
-            //glUniform1f(glGetUniformLocation(testshader->ID, "lightP.linear"), lightDir->linear);
-            //glUniform1f(glGetUniformLocation(testshader->ID, "lightP.quadratic"), lightDir->quadratic);
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightSpot.cosAngle"), lightDir->cosAngle);
 
-            //
+
+            //环境光
+            glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.1f, 0.1f, 0.4f);
+            
+            //平行光数据
+            glUniform3f(glGetUniformLocation(testshader->ID, "lightd.pos"), lightD->position.x, lightD->position.y, lightD->position.z);
+            glUniform3f(glGetUniformLocation(testshader->ID, "lightd.direction"), lightD->direction.x, lightD->direction.y, lightD->direction.z);
+            glUniform3f(glGetUniformLocation(testshader->ID, "lightd.color"), lightD->color.x, lightD->color.y, lightD->color.z);
+
+            //点光源数据
+            glUniform3f(glGetUniformLocation(testshader->ID, "lightP.pos"), lightP->position.x, lightP->position.y, lightP->position.z );
+            glUniform3f(glGetUniformLocation(testshader->ID, "lightP.color"), lightP->color.x, lightP->color.y, lightP->color.z);
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.constant"), lightP->constant);
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.linear"), lightP->linear);
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.quadratic"), lightP->quadratic);
+
+
+            //聚光灯
+            glUniform3f(glGetUniformLocation(testshader->ID, "lightS.pos"), lightS->position.x, lightS->position.y, lightS->position.z );
+            glUniform3f(glGetUniformLocation(testshader->ID, "lightS.color"), lightS->color.x, lightS->color.y, lightS->color.z );
+            glUniform3f(glGetUniformLocation(testshader->ID, "lightS.direction"), lightS->direction.x, lightS->direction.y, lightS->direction.z );
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightS.cosPhyInner"), lightS->cosPhyInner );
+            glUniform1f(glGetUniformLocation(testshader->ID, "lightS.cosPhyOut"), lightS->cosPhyOut );
+
+
+            //相机数据
+            glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
+            
+            //材质纹理数据
             myMaterial->shader->SetUniform3f("material.ambient", myMaterial->ambient);
             myMaterial->shader->SetUniform1i("material.diffuse", Shader::Diffuse);
             myMaterial->shader->SetUniform1i("material.specular", Shader::Specular);
             myMaterial->shader->SetUniform1f("material.shininess",myMaterial->shininess);
-            //myMaterial->shader->SetUniform3f("material.diffuse", myMaterial->diffuse);
-            //myMaterial->shader->SetUniform3f("material.specular", myMaterial->specular);
+   
 
 
             //Set Model  绑上下文VAO 
