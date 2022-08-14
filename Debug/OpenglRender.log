@@ -1,8 +1,2 @@
-﻿  main.cpp
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(162,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(163,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(169,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(170,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(172,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(173,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  Mesh.cpp
   OpenglRender.vcxproj -> G:\CG-Project\renderopengl\OpenglRender\Debug\OpenglRender.exe

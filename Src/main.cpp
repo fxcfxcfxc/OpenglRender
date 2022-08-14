@@ -18,6 +18,7 @@
 #include "LightPoint.h"
 #include "Material.h"
 #include "LightSpot.h"
+#include "Mesh.h"
 //=========================================模型数据信息=================================
 
 
@@ -105,7 +106,7 @@ void processInput(GLFWwindow*  window)
     }
 
 
-    // w s
+    //按下WS
     if ( glfwGetKey(window,GLFW_KEY_W) == GLFW_PRESS )
     {
         myCamera.speedZ = 1.0f;
@@ -120,7 +121,7 @@ void processInput(GLFWwindow*  window)
     }
 
 
-    // a d
+    //按下AD
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
         myCamera.speedX = 1.0f;
@@ -134,7 +135,7 @@ void processInput(GLFWwindow*  window)
         myCamera.speedX = 0;
     }
 
-    // q e 
+    //按下QE
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     {
         myCamera.speedY = 1.0f;
@@ -193,7 +194,7 @@ LightPoint* lightP = new LightPoint(glm::vec3(0.2f, -2.0f, 0.0f),
                                     glm::vec3(3.0f, 1.0f, 0.0f));
 
 //实例化聚光灯
-LightSpot* lightS = new LightSpot(glm::vec3(2.0f, 4.0f, 2.0f),
+LightSpot* lightS = new LightSpot(glm::vec3(0.0f, 4.0f, 0.0f),
                                   glm::vec3(glm::radians(90.0f), 0, 0),
                                   glm::vec3(1.0f, 1.0f, 2.0f));
 
@@ -271,7 +272,7 @@ int main()
 
 
 #pragma region Init Shader Program
-    //创建一个shader对象  传入 路径
+    //创建一个shader对象  传入路径
     Shader* testshader = new Shader("Shader/vertexSource.vert", "Shader/fragmentSource.frag");
 #pragma endregion  
 
@@ -286,6 +287,8 @@ Material* myMaterial = new Material(testshader,
 #pragma endregion 
 
 #pragma region Init and Load Models to VAO VBO
+
+
     //----------------------------------生成VAO对象，VAO就像是属性列表
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -296,7 +299,7 @@ Material* myMaterial = new Material(testshader,
     glGenBuffers(1,&VBO);
     //第一个参数代表绑定的数据类型
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    //将模型pos属性复制到vbo中   obj array ->  VBO buffer
+    //将模型数据复制到vbo中   obj data ->  VBO buffer
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
@@ -311,7 +314,7 @@ Material* myMaterial = new Material(testshader,
 
 
     //-----------------VBO -》  VAO--------------------------------------
-    // 将正确的属性 放入到 VAO对应的插槽数组中
+    // 将正确的属性 放入到 VAO对应的插槽中 
     //链接顶点pos属性
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
