@@ -1,2 +1,19 @@
-﻿  Mesh.cpp
+﻿  main.cpp
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(168,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(169,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(175,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(176,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(178,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(179,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4217: symbol '___glewActiveTexture' defined in 'glew32s.lib(glew.obj)' is imported by 'Mesh.obj' in function '"public: void __thiscall Mesh::Draw(class Shader *)" (?Draw@Mesh@@QAEXPAVShader@@@Z)'
+LINK : warning LNK4217: symbol '___glewBindBuffer' defined in 'glew32s.lib(glew.obj)' is imported by 'Mesh.obj' in function '"private: void __thiscall Mesh::setupMesh(void)" (?setupMesh@Mesh@@AAEXXZ)'
+LINK : warning LNK4217: symbol '___glewBufferData' defined in 'glew32s.lib(glew.obj)' is imported by 'Mesh.obj' in function '"private: void __thiscall Mesh::setupMesh(void)" (?setupMesh@Mesh@@AAEXXZ)'
+LINK : warning LNK4217: symbol '___glewGenBuffers' defined in 'glew32s.lib(glew.obj)' is imported by 'Mesh.obj' in function '"private: void __thiscall Mesh::setupMesh(void)" (?setupMesh@Mesh@@AAEXXZ)'
+LINK : warning LNK4217: symbol '___glewEnableVertexAttribArray' defined in 'glew32s.lib(glew.obj)' is imported by 'Mesh.obj' in function '"private: void __thiscall Mesh::setupMesh(void)" (?setupMesh@Mesh@@AAEXXZ)'
+LINK : warning LNK4217: symbol '___glewVertexAttribPointer' defined in 'glew32s.lib(glew.obj)' is imported by 'Mesh.obj' in function '"private: void __thiscall Mesh::setupMesh(void)" (?setupMesh@Mesh@@AAEXXZ)'
+LINK : warning LNK4217: symbol '___glewBindVertexArray' defined in 'glew32s.lib(glew.obj)' is imported by 'Mesh.obj' in function '"public: void __thiscall Mesh::Draw(class Shader *)" (?Draw@Mesh@@QAEXPAVShader@@@Z)'
+LINK : warning LNK4217: symbol '___glewGenVertexArrays' defined in 'glew32s.lib(glew.obj)' is imported by 'Mesh.obj' in function '"private: void __thiscall Mesh::setupMesh(void)" (?setupMesh@Mesh@@AAEXXZ)'
+glew32s.lib(glew.obj) : warning LNK4099: PDB '' was not found with 'glew32s.lib(glew.obj)' or at ''; linking object as if no debug info
   OpenglRender.vcxproj -> G:\CG-Project\renderopengl\OpenglRender\Debug\OpenglRender.exe
