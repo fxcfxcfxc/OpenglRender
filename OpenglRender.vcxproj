@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Model.cpp" />
     <ClCompile Include="Src\Mesh.cpp" />
     <ClCompile Include="Src\LightSpot.cpp" />
     <ClCompile Include="Src\LightPoint.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Src\Mesh.h" />
     <ClInclude Include="Src\LightSpot.h" />
     <ClInclude Include="Src\LightPoint.h" />

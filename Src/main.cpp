@@ -19,7 +19,7 @@
 #include "Material.h"
 #include "LightSpot.h"
 #include "Mesh.h"
-
+#include "Model.h"
 
 
 //模型数据
@@ -232,9 +232,13 @@ unsigned int LoadImageToGPU(const char* FileName,GLint  InternalFormat,GLenum Fo
 
 }
 
-int main() 
+int main(int argc, char* argv[]) 
 {   
- 
+    std::string exePath = argv[0];
+    //std::cout << exePath.substr(0, exePath.find_last_of('\\')) +"\\model\\nanosuit.obj" << std::endl;
+
+
+
 //创建窗口
 #pragma region OpenWindow   
     glfwInit();
@@ -302,8 +306,8 @@ Material* myMaterial = new Material(testshader,
 
 //创建Mesh对象 负责读取模型数据，并创建VAO,VAO， 纹理激活 传入shader
 #pragma region Init and Load Models to VAO VBO
-    Mesh cube(vertices);
-        
+    //Mesh cube(vertices);
+    Model model( exePath.substr(0, exePath.find_last_of('\\')) + "\\model\\nanosuit.obj");
     //----------------------------------生成VAO对象，VAO就像是属性列表
     //unsigned int VAO;
     //glGenVertexArrays(1, &VAO);
@@ -393,7 +397,7 @@ Material* myMaterial = new Material(testshader,
 
         viewMat = myCamera.GetViewMatrix();
 
-        for (int index = 0; index<2; index++)
+        for (int index = 0; index<1; index++)
         {
             // Set model Martix
             modelMat = glm::translate( glm:: mat4(1.0f), cubePositions[index]);
@@ -469,8 +473,8 @@ Material* myMaterial = new Material(testshader,
 
             //第一个参数绘制模式，第二个参数绘制定点数，第三个参数是索引类型，第四个参数 EBO中的偏移量
             //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-            cube.Draw(myMaterial->shader);
-
+            //cube.Draw(myMaterial->shader);
+            model.Draw(myMaterial->shader);
 
         }
 
