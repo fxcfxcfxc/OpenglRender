@@ -1,4 +1,4 @@
-
+#pragma once
 #include    <iostream>
 
 
@@ -6,7 +6,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Shader.h"
-
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -21,7 +20,8 @@
 #include "LightSpot.h"
 #include "Mesh.h"
 #include "Model.h"
-
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw_gl3.h"
 
 //模型数据
 #pragma region Model Data
@@ -256,8 +256,12 @@ int main(int argc, char* argv[])
        return -1;
     }
     glfwMakeContextCurrent(window);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(window, mouse_callback);
+
+    //设置鼠标 光标运行后不显示
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    //监听鼠标键盘事件，更新摄像机数据
+    //glfwSetCursorPosCallback(window, mouse_callback);
 
     //
     glewExperimental = true;
@@ -294,18 +298,18 @@ int main(int argc, char* argv[])
 //创建Material对象 读取图片，初始化传入shader的参数
 #pragma region Init Material  Data
 //--------------------------Creat Material
-Material* myMaterial = new Material(testshader,
-                                        LoadImageToGPU("Debug/model/body_dif.png", GL_RGBA, GL_RGBA, Shader::Diffuse),
-                                        LoadImageToGPU("resource/container2specular.png", GL_RGBA, GL_RGBA, Shader::Specular),
-                                        glm::vec3(1.0f, 1.0f, 1.0f),
-                                        64.0f);
+//Material* myMaterial = new Material(testshader,
+//                                        LoadImageToGPU("Debug/model/body_dif.png", GL_RGBA, GL_RGBA, Shader::Diffuse),
+//                                        LoadImageToGPU("resource/container2specular.png", GL_RGBA, GL_RGBA, Shader::Specular),
+//                                        glm::vec3(1.0f, 1.0f, 1.0f),
+//                                        64.0f);
 #pragma endregion 
 
 
 
 
 
-//创建Mesh对象 负责读取模型数据，并创建VAO,VAO， 纹理激活 传入shader
+//创建Mesh对象 从文件读取模型数据，并设置VAO,VAO， 设置纹理
 #pragma region Init and Load Models to VAO VBO
     //Mesh cube(vertices);
     Model model( exePath.substr(0, exePath.find_last_of('\\')) + "\\model\\nanosuit.obj");
@@ -330,9 +334,15 @@ Material* myMaterial = new Material(testshader,
 #pragma endregion
 
 
+    ImGui::CreateContext();
+    ImGui_ImplGlfwGL3_Init(window, true);
+    ImGui::StyleColorsDark();
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 
-
+    glm::vec3 t = glm::vec3(0.0f, -10.0f, 0.0f);
     ////----------------------------------Render Loop 渲染循环-------------------------  
     while (!glfwWindowShouldClose(window))
     {   
@@ -347,12 +357,12 @@ Material* myMaterial = new Material(testshader,
         //清空屏幕的color buffer ,DEPTH_BUFFER
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-                
+        ImGui_ImplGlfwGL3_NewFrame();
         //更新M矩阵
         //缩放
         modelMat = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
         //平移
-        modelMat = glm::translate(modelMat, glm::vec3(0.0f, -10.0f, 0.0f));
+        modelMat = glm::translate(modelMat, t);
         //旋转
         //float angle =0;
         //modelMat= glm:: rotate(modelMat, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
@@ -403,14 +413,35 @@ Material* myMaterial = new Material(testshader,
         //相机数据传入
         glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
             
-        //材质传入
-        myMaterial->shader->SetUniform3f("material.ambient", myMaterial->ambient);
-        myMaterial->shader->SetUniform1f("material.shininess",myMaterial->shininess);
+        testshader->SetUniform3f("material.ambient", glm::vec3(1.0f, 1.0f, 1.0f));
+        testshader->SetUniform1f("material.shininess",64.0f);
    
         //包含纹理传入
-        model.Draw(myMaterial->shader);
+        model.Draw(testshader);
 
-        
+
+        //UI
+        {
+            static float f = 0.0f;
+            static int counter = 0;
+            ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
+            ImGui::SliderFloat3("t", &t.x, -30.0f, 10.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
+            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our windows open/close state
+            ImGui::Checkbox("Another Window", &show_another_window);
+
+            if (ImGui::Button("Button"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
+                counter++;
+            ImGui::SameLine();
+            ImGui::Text("counter = %d", counter);
+
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        }
+
+
+        ImGui::Render();
+        ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
         //Clean up, prepare for next render loop
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -418,6 +449,8 @@ Material* myMaterial = new Material(testshader,
 
     }
 
+    ImGui_ImplGlfwGL3_Shutdown();
+    ImGui::DestroyContext();
     //删除释放资源的方法，清理所有资源 并正确地退出所有应用
     glfwTerminate();
     return 0;

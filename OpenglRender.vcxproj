@@ -151,6 +151,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\imgui\imgui.cpp" />
+    <ClCompile Include="Src\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Src\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Src\imgui\imgui_impl_glfw_gl3.cpp" />
     <ClCompile Include="Src\Model.cpp" />
     <ClCompile Include="Src\Mesh.cpp" />
     <ClCompile Include="Src\LightSpot.cpp" />
@@ -162,6 +166,13 @@
     <ClCompile Include="Src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\imgui\imconfig.h" />
+    <ClInclude Include="Src\imgui\imgui.h" />
+    <ClInclude Include="Src\imgui\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="Src\imgui\imgui_internal.h" />
+    <ClInclude Include="Src\imgui\stb_rect_pack.h" />
+    <ClInclude Include="Src\imgui\stb_textedit.h" />
+    <ClInclude Include="Src\imgui\stb_truetype.h" />
     <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Src\Mesh.h" />
     <ClInclude Include="Src\LightSpot.h" />

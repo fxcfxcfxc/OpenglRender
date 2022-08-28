@@ -58,7 +58,7 @@ void Mesh::Draw(Shader* shader)
 	//解绑vao
 	glBindVertexArray(0);
 
-	//纹理指向充值
+	//纹理指向重置
 	glActiveTexture(GL_TEXTURE0);
 }
 

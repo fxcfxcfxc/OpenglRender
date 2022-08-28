@@ -162,9 +162,9 @@ void main()
 
          vec3 LightMergeColor;
 
-         LightMergeColor += GetDirectionLight(lightd, nDirWS, vDirWs, posWS, material, TexCoord);
-         LightMergeColor += GetPointLight(lightP, nDirWS, vDirWs, posWS, material, TexCoord);
-         LightMergeColor += GetSpotLight(lightS, nDirWS, vDirWs, posWS, material, TexCoord);
+         LightMergeColor += GetDirectionLight(lightd, nDirWS, vDirWs, posWS, material, TexCoord) * 0.5;
+         LightMergeColor += GetPointLight(lightP, nDirWS, vDirWs, posWS, material, TexCoord)* 0.5;
+         LightMergeColor += GetSpotLight(lightS, nDirWS, vDirWs, posWS, material, TexCoord)* 0.5;
     
 
          FragColor = vec4( LightMergeColor +ambient , 1.0);
