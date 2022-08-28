@@ -177,6 +177,8 @@
     <Text Include="Shader\vertexSource.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Debug\model\body_dif.png" />
+    <Image Include="Debug\model\glass_dif.png" />
     <Image Include="resource\awesomeface.png" />
     <Image Include="resource\container.jpg" />
     <Image Include="resource\container2.png" />

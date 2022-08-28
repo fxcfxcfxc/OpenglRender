@@ -1,3 +1,4 @@
+
 #include    <iostream>
 
 
@@ -207,7 +208,7 @@ LightSpot* lightS = new LightSpot(glm::vec3(0.0f, 4.0f, 0.0f),
 
 
 
-unsigned int LoadImageToGPU(const char* FileName,GLint  InternalFormat,GLenum Format, int TextureSlot)
+unsigned int LoadImageToGPU(const char* FileName,GLint   InternalFormat,GLenum Format, int TextureSlot)
 {
     unsigned int TexBuffer;
     glGenTextures(1, &TexBuffer);
@@ -294,7 +295,7 @@ int main(int argc, char* argv[])
 #pragma region Init Material  Data
 //--------------------------Creat Material
 Material* myMaterial = new Material(testshader,
-                                        LoadImageToGPU("resource/container2.png", GL_RGBA, GL_RGBA, Shader::Diffuse),
+                                        LoadImageToGPU("Debug/model/body_dif.png", GL_RGBA, GL_RGBA, Shader::Diffuse),
                                         LoadImageToGPU("resource/container2specular.png", GL_RGBA, GL_RGBA, Shader::Specular),
                                         glm::vec3(1.0f, 1.0f, 1.0f),
                                         64.0f);
@@ -308,50 +309,7 @@ Material* myMaterial = new Material(testshader,
 #pragma region Init and Load Models to VAO VBO
     //Mesh cube(vertices);
     Model model( exePath.substr(0, exePath.find_last_of('\\')) + "\\model\\nanosuit.obj");
-    //----------------------------------生成VAO对象，VAO就像是属性列表
-    //unsigned int VAO;
-    //glGenVertexArrays(1, &VAO);
-    //glBindVertexArray(VAO);
-
-    //----------------------------------------生成VBO对象
-    //unsigned int VBO;
-    //glGenBuffers(1,&VBO);
-    //第一个参数代表绑定的数据类型
-    //glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    //将模型数据复制到vbo中   obj data ->  VBO buffer
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-
-
-    //-----------------------------------------创建EBO对象
-    //unsigned int EBO;
-    //glGenBuffers(1, &EBO);
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices), indices , GL_STATIC_DRAW);
-
-
-
-
-    //-----------------VBO -》  VAO--------------------------------------
-    // 将正确的属性 放入到 VAO对应的插槽中 
-    //链接顶点pos属性
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-   // glEnableVertexAttribArray(0);
-
-    //链接顶点  UV属性
-    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    //glEnableVertexAttribArray(2);
-
-    //normal
-    //glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    //glEnableVertexAttribArray(3);
-
-    //链接顶点vertexcolor属性
-/*  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);*/
-
-
-#pragma endregion
+ #pragma endregion
  
 
 
@@ -389,94 +347,68 @@ Material* myMaterial = new Material(testshader,
         //清空屏幕的color buffer ,DEPTH_BUFFER
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+                
+        //更新M矩阵
+        //缩放
+        modelMat = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
+        //平移
+        modelMat = glm::translate(modelMat, glm::vec3(0.0f, -10.0f, 0.0f));
+        //旋转
+        //float angle =0;
+        //modelMat= glm:: rotate(modelMat, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
-
-        //绑定EBO到   GL_ELEMENT_ARRAY_BUFFER
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
-
-
+        //更新V矩阵
         viewMat = myCamera.GetViewMatrix();
 
-        for (int index = 0; index<1; index++)
-        {
-            // Set model Martix
-            modelMat = glm::translate( glm:: mat4(1.0f), cubePositions[index]);
-            float angle = 20.0f * index;
-            modelMat= glm:: rotate(modelMat, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        //Set Material -> ShaderProgram
+        testshader->use();
 
 
-
-            //Set Material -> ShaderProgram
-            testshader->use();
-
-            //Set Material  -> Texture
-            //glActiveTexture(GL_TEXTURE0);
-           //glBindTexture(GL_TEXTURE_2D, myMaterial->diffuse);
-           // glActiveTexture(GL_TEXTURE0 +1);
-           // glBindTexture(GL_TEXTURE_2D, myMaterial->specular);
+        //矩阵数据传入
+        //glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "transform"), 1, GL_FALSE, glm:: value_ptr(trans));
+        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(modelMat));
+        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(viewMat));
+        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
 
 
-            //-----------------------------------设置材质数据
-            //矩阵数据传入
-            //glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "transform"), 1, GL_FALSE, glm:: value_ptr(trans));
-            glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(modelMat));
-            glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(viewMat));
-            glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
-
-
-
-            //光源数据传入 shader
-
-            //环境光
-            glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.1f, 0.1f, 0.4f);
+        //光源数据传入 shader
+        #pragma region light to shader
+        //环境光
+        glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.1f, 0.1f, 0.4f);
             
-            //平行光数据
-            glUniform3f(glGetUniformLocation(testshader->ID, "lightd.pos"), lightD->position.x, lightD->position.y, lightD->position.z);
-            glUniform3f(glGetUniformLocation(testshader->ID, "lightd.direction"), lightD->direction.x, lightD->direction.y, lightD->direction.z);
-            glUniform3f(glGetUniformLocation(testshader->ID, "lightd.color"), lightD->color.x, lightD->color.y, lightD->color.z);
+        //平行光数据
+        glUniform3f(glGetUniformLocation(testshader->ID, "lightd.pos"), lightD->position.x, lightD->position.y, lightD->position.z);
+        glUniform3f(glGetUniformLocation(testshader->ID, "lightd.direction"), lightD->direction.x, lightD->direction.y, lightD->direction.z);
+        glUniform3f(glGetUniformLocation(testshader->ID, "lightd.color"), lightD->color.x, lightD->color.y, lightD->color.z);
 
-            //点光源数据
-            glUniform3f(glGetUniformLocation(testshader->ID, "lightP.pos"), lightP->position.x, lightP->position.y, lightP->position.z );
-            glUniform3f(glGetUniformLocation(testshader->ID, "lightP.color"), lightP->color.x, lightP->color.y, lightP->color.z);
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.constant"), lightP->constant);
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.linear"), lightP->linear);
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightP.quadratic"), lightP->quadratic);
-
-
-            //聚光灯
-            glUniform3f(glGetUniformLocation(testshader->ID, "lightS.pos"), lightS->position.x, lightS->position.y, lightS->position.z );
-            glUniform3f(glGetUniformLocation(testshader->ID, "lightS.color"), lightS->color.x, lightS->color.y, lightS->color.z );
-            glUniform3f(glGetUniformLocation(testshader->ID, "lightS.direction"), lightS->direction.x, lightS->direction.y, lightS->direction.z );
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightS.cosPhyInner"), lightS->cosPhyInner );
-            glUniform1f(glGetUniformLocation(testshader->ID, "lightS.cosPhyOut"), lightS->cosPhyOut );
+        //点光源数据
+        glUniform3f(glGetUniformLocation(testshader->ID, "lightP.pos"), lightP->position.x, lightP->position.y, lightP->position.z );
+        glUniform3f(glGetUniformLocation(testshader->ID, "lightP.color"), lightP->color.x, lightP->color.y, lightP->color.z);
+        glUniform1f(glGetUniformLocation(testshader->ID, "lightP.constant"), lightP->constant);
+        glUniform1f(glGetUniformLocation(testshader->ID, "lightP.linear"), lightP->linear);
+        glUniform1f(glGetUniformLocation(testshader->ID, "lightP.quadratic"), lightP->quadratic);
 
 
-            //相机数据传入
-            glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
+        //聚光灯
+        glUniform3f(glGetUniformLocation(testshader->ID, "lightS.pos"), lightS->position.x, lightS->position.y, lightS->position.z );
+        glUniform3f(glGetUniformLocation(testshader->ID, "lightS.color"), lightS->color.x, lightS->color.y, lightS->color.z );
+        glUniform3f(glGetUniformLocation(testshader->ID, "lightS.direction"), lightS->direction.x, lightS->direction.y, lightS->direction.z );
+        glUniform1f(glGetUniformLocation(testshader->ID, "lightS.cosPhyInner"), lightS->cosPhyInner );
+        glUniform1f(glGetUniformLocation(testshader->ID, "lightS.cosPhyOut"), lightS->cosPhyOut );
+
+
+        #pragma endregion
+
+
+        //相机数据传入
+        glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
             
-            //材质纹理数据传入
-            myMaterial->shader->SetUniform3f("material.ambient", myMaterial->ambient);
-            //myMaterial->shader->SetUniform1i("material.diffuse", Shader::Diffuse);
-            //myMaterial->shader->SetUniform1i("material.specular", Shader::Specular);
-            myMaterial->shader->SetUniform1f("material.shininess",myMaterial->shininess);
+        //材质传入
+        myMaterial->shader->SetUniform3f("material.ambient", myMaterial->ambient);
+        myMaterial->shader->SetUniform1f("material.shininess",myMaterial->shininess);
    
-
-
-            //Set Model  绑上下文VAO 
-           //glBindVertexArray(VAO);
-
-
-            //DrawCall
-            //从数组缓存中的哪一位开始绘制，一般为0.,数组中顶点的数量.
-            //glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
-            //第一个参数绘制模式，第二个参数绘制定点数，第三个参数是索引类型，第四个参数 EBO中的偏移量
-            //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-            //cube.Draw(myMaterial->shader);
-            model.Draw(myMaterial->shader);
-
-        }
+        //包含纹理传入
+        model.Draw(myMaterial->shader);
 
         
         //Clean up, prepare for next render loop

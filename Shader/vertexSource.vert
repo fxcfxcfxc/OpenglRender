@@ -17,7 +17,7 @@ out vec3 nDirWS;
 out vec3 posWS;
 
 void main()
-{                                            
+{                                             
         gl_Position =  projMat * viewMat * modelMat * vec4(aPos,  1.0); 
         posWS = (modelMat * vec4(aPos,1.0) ) .xyz;
         nDirWS =  mat3(transpose( inverse(modelMat)) ) * aNormal;

@@ -25,10 +25,12 @@ Mesh::~Mesh()
 
 void Mesh::Draw(Shader* shader)
 {
+	//遍历mesh的纹理
 	for (unsigned int i =0; i <textures.size(); i++)
 	{
 		if(textures[i].type =="texture_diffuse")
 		{
+			//纹理1 绑定
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D,textures[i].id);
 			shader->SetUniform1i("material.diffuse",0);
@@ -36,6 +38,7 @@ void Mesh::Draw(Shader* shader)
 		}
 		else if (textures[i].type == "texture_specular")
 		{
+			//纹理2 绑定
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 			shader->SetUniform1i("material.specular", 1);
@@ -44,10 +47,18 @@ void Mesh::Draw(Shader* shader)
 
 	}
 
+
+	//绑定vao
 	glBindVertexArray(VAO);
 	//glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	//dracall绘制
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0 );
+
+	//解绑vao
 	glBindVertexArray(0);
+
+	//纹理指向充值
 	glActiveTexture(GL_TEXTURE0);
 }
 

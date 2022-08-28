@@ -96,6 +96,12 @@
     <Image Include="resource\container2specular.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Debug\model\glass_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Debug\model\body_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
