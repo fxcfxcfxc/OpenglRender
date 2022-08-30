@@ -23,7 +23,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw_gl3.h"
 
-//模型数据
+//手动模型数据
 #pragma region Model Data
 float vertices[] = {
     // positions          // normals           // texture coords
@@ -90,7 +90,7 @@ glm::vec3 cubePositions[] = {
 //创建相机
 #pragma region  Create Camera
 
-Camera myCamera(glm::vec3(0, 0, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f, .0));
+Camera myCamera(glm::vec3(0, 0.5f, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f, .0));
 #pragma endregion
 
 
@@ -343,6 +343,7 @@ int main(int argc, char* argv[])
 
 
     glm::vec3 t = glm::vec3(0.0f, -10.0f, 0.0f);
+    float angle = 0;
     ////----------------------------------Render Loop 渲染循环-------------------------  
     while (!glfwWindowShouldClose(window))
     {   
@@ -361,11 +362,11 @@ int main(int argc, char* argv[])
         //更新M矩阵
         //缩放
         modelMat = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
+        //旋转
+        modelMat = glm::rotate(modelMat, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
         //平移
         modelMat = glm::translate(modelMat, t);
-        //旋转
-        //float angle =0;
-        //modelMat= glm:: rotate(modelMat, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+     
 
         //更新V矩阵
         viewMat = myCamera.GetViewMatrix();
@@ -420,22 +421,23 @@ int main(int argc, char* argv[])
         model.Draw(testshader);
 
 
-        //UI
+        //imgui
         {
             static float f = 0.0f;
             static int counter = 0;
-            ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
-            ImGui::SliderFloat3("t", &t.x, -30.0f, 10.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            ImGui::Text("Hello, world!");                          
+            ImGui::SliderFloat3("t", &t.x, -30.0f, 10.0f);           
+            ImGui::SliderFloat("angle", &angle, 0.0f, 360.0f);
+            ImGui::ColorEdit3("clear color", (float*)&clear_color); 
 
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our windows open/close state
+            ImGui::Checkbox("Demo Window", &show_demo_window);      
             ImGui::Checkbox("Another Window", &show_another_window);
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
+            if (ImGui::Button("Button"))                           
                 counter++;
+
             ImGui::SameLine();
             ImGui::Text("counter = %d", counter);
-
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         }
 

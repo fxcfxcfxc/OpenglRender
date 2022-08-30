@@ -173,7 +173,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType 
 
 
 
-//返回纹理buffer id
+//将纹理从文件中 导出GPU  并返回buffer id
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma)
 {
 	std::string filename = std::string(path);
