@@ -312,7 +312,8 @@ int main(int argc, char* argv[])
 //创建Mesh对象 从文件读取模型数据，并设置VAO,VAO， 设置纹理
 #pragma region Init and Load Models to VAO VBO
     //Mesh cube(vertices);
-    Model model( exePath.substr(0, exePath.find_last_of('\\')) + "\\model\\nanosuit.obj");
+    Model model( "E:\\Project\\Opengl\\model\\nanosuit.obj");
+    //Model model( exePath.substr(0, exePath.find_last_of('\\')) + "\\model\\nanosuit.obj");
  #pragma endregion
  
 
