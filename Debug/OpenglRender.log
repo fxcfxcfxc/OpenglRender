@@ -1,8 +1,0 @@
-﻿  main.cpp
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(169,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(170,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(176,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(177,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(179,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-G:\CG-Project\renderopengl\OpenglRender\Src\main.cpp(180,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  OpenglRender.vcxproj -> G:\CG-Project\renderopengl\OpenglRender\Debug\OpenglRender.exe
