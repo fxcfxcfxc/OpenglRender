@@ -155,19 +155,7 @@ vec3 GetSpotLight( LightSpot lS, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material
 
 void main()
 {             
-         vec3 diffuseTexture = texture(material.diffuse, TexCoord).rgb;   
-         vec3 ambient  =   ambientColor *  diffuseTexture;
-         vec3 vDirWs = normalize(cameraPos - posWS);
-
-
-         vec3 LightMergeColor;
-
-         LightMergeColor += GetDirectionLight(lightd, nDirWS, vDirWs, posWS, material, TexCoord) * 0.5;
-         LightMergeColor += GetPointLight(lightP, nDirWS, vDirWs, posWS, material, TexCoord)* 0.5;
-         //LightMergeColor += GetSpotLight(lightS, nDirWS, vDirWs, posWS, material, TexCoord)* 0.5;
-    
-
-         FragColor = vec4( LightMergeColor +ambient , 1.0);
-          //FragColor = vec4( 1.0 ,1.0, 1.0, 1.0);
+      
+          FragColor = vec4( 1.0 ,1.0, 1.0, 1.0);
         
 }

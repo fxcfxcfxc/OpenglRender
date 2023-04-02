@@ -173,18 +173,20 @@
     <ClInclude Include="Src\imgui\stb_rect_pack.h" />
     <ClInclude Include="Src\imgui\stb_textedit.h" />
     <ClInclude Include="Src\imgui\stb_truetype.h" />
-    <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Src\Mesh.h" />
     <ClInclude Include="Src\LightSpot.h" />
     <ClInclude Include="Src\LightPoint.h" />
     <ClInclude Include="Src\LightDirectional.h" />
     <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\Camera.h" />
+    <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Src\Shader.h" />
     <ClInclude Include="Src\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Shader\fragmentSource.frag" />
+    <Text Include="Shader\LightfragmentSource.frag" />
+    <Text Include="Shader\LightvertexSource.vert" />
     <Text Include="Shader\vertexSource.vert" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +200,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="model\Houtou.mtl" />
+    <Content Include="model\Houtou.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

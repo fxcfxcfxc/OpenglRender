@@ -26,48 +26,47 @@
 //手动模型数据
 #pragma region Model Data
 float vertices[] = {
-    // positions          // normals           // texture coords
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
 glm::vec3 cubePositions[] = {
@@ -84,16 +83,11 @@ glm::vec3 cubePositions[] = {
 };
 #pragma endregion
 
-
-
-
 //创建相机
 #pragma region  Create Camera
 
 Camera myCamera(glm::vec3(0, 0.5f, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f, .0));
 #pragma endregion
-
-
 
 //更新键盘输入 更新相机位置方向
 #pragma region Camera  Update Declare
@@ -185,7 +179,6 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos)
 }
 #pragma endregion
 
-
 //创建灯光
 #pragma region Init Light
 
@@ -205,8 +198,6 @@ LightSpot* lightS = new LightSpot(glm::vec3(0.0f, 4.0f, 0.0f),
                                   glm::vec3(1.0f, 1.0f, 2.0f));
 
 #pragma endregion
-
-
 
 unsigned int LoadImageToGPU(const char* FileName,GLint   InternalFormat,GLenum Format, int TextureSlot)
 {
@@ -284,16 +275,16 @@ int main(int argc, char* argv[])
     glEnable(GL_DEPTH_TEST);
 
 #pragma endregion
-
-
+    
 
 //创建shader对象  负责读取顶点和片元着色器文件，并创建shader程序
 #pragma region Init Shader Program
-    //创建一个shader对象  传入路径
+    //创建一个Mesh 需要用到的shader
     Shader* testshader = new Shader("Shader/vertexSource.vert", "Shader/fragmentSource.frag");
+
+    //绘制灯光辅助显示 shader
+    Shader* lightShader = new Shader("Shader/LightvertexSource.vert", "Shader/LightfragmentSource.frag");
 #pragma endregion  
-
-
 
 //创建Material对象 读取图片，初始化传入shader的参数
 #pragma region Init Material  Data
@@ -305,18 +296,11 @@ int main(int argc, char* argv[])
 //                                        64.0f);
 #pragma endregion 
 
-
-
-
-
-//创建Mesh对象 从文件读取模型数据，并设置VAO,VAO， 设置纹理
+// 创建model
 #pragma region Init and Load Models to VAO VBO
-    //Mesh cube(vertices);
-    Model model( "E:\\Project\\Opengl\\model\\nanosuit.obj");
-    //Model model( exePath.substr(0, exePath.find_last_of('\\')) + "\\model\\nanosuit.obj");
+    Model model( "E:\\Project\\Opengl\\model\\Houtou.obj");
  #pragma endregion
  
-
 
 //模型变化的矩阵数据
 #pragma region MVP vertex
@@ -334,7 +318,6 @@ int main(int argc, char* argv[])
 
 #pragma endregion
 
-
     ImGui::CreateContext();
     ImGui_ImplGlfwGL3_Init(window, true);
     ImGui::StyleColorsDark();
@@ -342,10 +325,23 @@ int main(int argc, char* argv[])
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-
+    //模型位移
     glm::vec3 t = glm::vec3(0.0f, -10.0f, 0.0f);
+
+
+    //模型旋转
     float angle = 0;
-    ////----------------------------------Render Loop 渲染循环-------------------------  
+
+    float lightangle = 0;
+
+    //创建环境光颜色
+    glm::vec3 abColor = glm::vec3(1.0f, 0.1f, 0.4f);
+
+    //
+    glm::vec3 pointPosition = glm::vec3(lightP->position);
+
+    
+    ////----------------------------------Render Loop 渲染循环 -------------------------  
     while (!glfwWindowShouldClose(window))
     {   
  
@@ -356,79 +352,68 @@ int main(int argc, char* argv[])
         //设置用来 清空屏幕的 颜色
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-        //清空屏幕的color buffer ,DEPTH_BUFFER
+        //清空屏幕 模式为 color buffer ,DEPTH_BUFFER
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         ImGui_ImplGlfwGL3_NewFrame();
-        //更新M矩阵
+
+        
+        //---更新模型 变换矩阵M --
         //缩放
         modelMat = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
         //旋转
         modelMat = glm::rotate(modelMat, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
         //平移
         modelMat = glm::translate(modelMat, t);
-     
 
-        //更新V矩阵
+        //---更新相机数据 V矩阵---
         viewMat = myCamera.GetViewMatrix();
 
-        //Set Material -> ShaderProgram
+
+        //---更新点光源数据---
+        lightP->position = pointPosition;
+
+        //绑定当前使用的shader着色
         testshader->use();
 
+        //设置渲染所需的最新数据 传递给shader着色器 灯光数据（平行光，方向光，点光源，环境光，MVP矩阵，相机数据）
+        testshader->SetRenderingData(modelMat, viewMat, projMat, abColor, lightD, lightP, lightS, myCamera);
 
-        //矩阵数据传入
-        //glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "transform"), 1, GL_FALSE, glm:: value_ptr(trans));
-        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(modelMat));
-        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(viewMat));
-        glUniformMatrix4fv(glGetUniformLocation(testshader->ID, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
-
-
-        //光源数据传入 shader
-        #pragma region light to shader
-        //环境光
-        glUniform3f(glGetUniformLocation(testshader->ID, "ambientColor"), 0.1f, 0.1f, 0.4f);
-            
-        //平行光数据
-        glUniform3f(glGetUniformLocation(testshader->ID, "lightd.pos"), lightD->position.x, lightD->position.y, lightD->position.z);
-        glUniform3f(glGetUniformLocation(testshader->ID, "lightd.direction"), lightD->direction.x, lightD->direction.y, lightD->direction.z);
-        glUniform3f(glGetUniformLocation(testshader->ID, "lightd.color"), lightD->color.x, lightD->color.y, lightD->color.z);
-
-        //点光源数据
-        glUniform3f(glGetUniformLocation(testshader->ID, "lightP.pos"), lightP->position.x, lightP->position.y, lightP->position.z );
-        glUniform3f(glGetUniformLocation(testshader->ID, "lightP.color"), lightP->color.x, lightP->color.y, lightP->color.z);
-        glUniform1f(glGetUniformLocation(testshader->ID, "lightP.constant"), lightP->constant);
-        glUniform1f(glGetUniformLocation(testshader->ID, "lightP.linear"), lightP->linear);
-        glUniform1f(glGetUniformLocation(testshader->ID, "lightP.quadratic"), lightP->quadratic);
-
-
-        //聚光灯
-        glUniform3f(glGetUniformLocation(testshader->ID, "lightS.pos"), lightS->position.x, lightS->position.y, lightS->position.z );
-        glUniform3f(glGetUniformLocation(testshader->ID, "lightS.color"), lightS->color.x, lightS->color.y, lightS->color.z );
-        glUniform3f(glGetUniformLocation(testshader->ID, "lightS.direction"), lightS->direction.x, lightS->direction.y, lightS->direction.z );
-        glUniform1f(glGetUniformLocation(testshader->ID, "lightS.cosPhyInner"), lightS->cosPhyInner );
-        glUniform1f(glGetUniformLocation(testshader->ID, "lightS.cosPhyOut"), lightS->cosPhyOut );
-
-
-        #pragma endregion
-
-
-        //相机数据传入
-        glUniform3f(glGetUniformLocation(testshader->ID, "cameraPos"), myCamera.Position.x, myCamera.Position.y, myCamera.Position.z);
-            
-        testshader->SetUniform3f("material.ambient", glm::vec3(1.0f, 1.0f, 1.0f));
-        testshader->SetUniform1f("material.shininess",64.0f);
-   
-        //包含纹理传入
+        //调用绘制每一个mesh对象
         model.Draw(testshader);
+        
+        //绑定 灯光绘制的 shader着色
+        lightShader->use();
+        
+        //设置 灯光绘制所需的数据并传递
+        //---更新模型 变换矩阵M --
+        //缩放
+        modelMat = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
+        //旋转
+        modelMat = glm::rotate(modelMat, glm::radians(lightangle), glm::vec3(0.0f, 1.0f, 0.0f));
+        //平移
+        modelMat = glm::translate(modelMat, pointPosition);
 
+        lightShader->SetRenderingData(modelMat, viewMat, projMat,myCamera);
+
+        //绘制辅助灯光控件，方便观察（用box标志）
+        unsigned int VAO,VBO;
+        Model::DrawLight(VAO,VBO);
+   
+	
 
         //imgui
         {
             static float f = 0.0f;
             static int counter = 0;
-            ImGui::Text("Hello, world!");                          
-            ImGui::SliderFloat3("t", &t.x, -30.0f, 10.0f);           
+            ImGui::Text("Hello, world!");
+            // 调节模型位置
+            ImGui::SliderFloat3("t", &t.x, -30.0f, 30.0f);
+            // 调节点光源位置
+            ImGui::SliderFloat3("pointPosition", &pointPosition.x, -30.0f, 30.0f);
+            
+            // 调节模型旋转
             ImGui::SliderFloat("angle", &angle, 0.0f, 360.0f);
+            
             ImGui::ColorEdit3("clear color", (float*)&clear_color); 
 
             ImGui::Checkbox("Demo Window", &show_demo_window);      

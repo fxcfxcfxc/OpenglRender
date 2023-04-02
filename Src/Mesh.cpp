@@ -25,7 +25,7 @@ Mesh::~Mesh()
 
 void Mesh::Draw(Shader* shader)
 {
-	//遍历mesh的纹理
+	//遍历mesh的纹理列表，绑定需要使用的纹理数据，传递给shader
 	for (unsigned int i =0; i <textures.size(); i++)
 	{
 		if(textures[i].type =="texture_diffuse")
@@ -58,7 +58,7 @@ void Mesh::Draw(Shader* shader)
 	//解绑vao
 	glBindVertexArray(0);
 
-	//纹理指向重置
+	//解绑纹理指向重置
 	glActiveTexture(GL_TEXTURE0);
 }
 
