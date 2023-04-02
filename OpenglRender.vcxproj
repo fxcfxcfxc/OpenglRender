@@ -202,8 +202,29 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="model\arm_dif.png" />
+    <Content Include="model\arm_showroom_ddn.png" />
+    <Content Include="model\arm_showroom_spec.png" />
+    <Content Include="model\body_dif.png" />
+    <Content Include="model\body_showroom_ddn.png" />
+    <Content Include="model\body_showroom_spec.png" />
+    <Content Include="model\glass_ddn.png" />
+    <Content Include="model\glass_dif.png" />
+    <Content Include="model\hand_dif.png" />
+    <Content Include="model\hand_showroom_ddn.png" />
+    <Content Include="model\hand_showroom_spec.png" />
+    <Content Include="model\helmet_diff.png" />
+    <Content Include="model\helmet_showroom_ddn.png" />
+    <Content Include="model\helmet_showroom_spec.png" />
     <Content Include="model\Houtou.mtl" />
     <Content Include="model\Houtou.obj" />
+    <Content Include="model\leg_dif.png" />
+    <Content Include="model\leg_showroom_ddn.png" />
+    <Content Include="model\leg_showroom_spec.png" />
+    <Content Include="model\LICENSE.txt" />
+    <Content Include="model\nanosuit.blend" />
+    <Content Include="model\nanosuit.mtl" />
+    <Content Include="model\nanosuit.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

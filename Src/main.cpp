@@ -298,7 +298,7 @@ int main(int argc, char* argv[])
 
 // ´´½¨model
 #pragma region Init and Load Models to VAO VBO
-    Model model( "E:\\Project\\Opengl\\model\\Houtou.obj");
+    Model model( "E:\\Project\\Opengl\\model\\nanosuit.obj");
  #pragma endregion
  
 
