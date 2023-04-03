@@ -14,6 +14,7 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 #include "Camera.h"
+#include "DrawGizmo.h"
 #include "LightDirectional.h"
 #include "LightPoint.h"
 #include "Material.h"
@@ -356,48 +357,43 @@ int main(int argc, char* argv[])
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ImGui_ImplGlfwGL3_NewFrame();
 
-        
-        //---更新模型 变换矩阵M --
-        //缩放
-        modelMat = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
-        //旋转
-        modelMat = glm::rotate(modelMat, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
-        //平移
-        modelMat = glm::translate(modelMat, t);
+        //--------------------------------------绘制mesh----------------------------
+        //对模型做变换  model矩阵
+        model.ResetTransform();
+        model.modelMatrix = glm::rotate(model.modelMatrix, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+        model.modelMatrix = glm::translate(model.modelMatrix, t);
 
-        //---更新相机数据 V矩阵---
+        //更新相机数据 V矩阵
         viewMat = myCamera.GetViewMatrix();
-
-
-        //---更新点光源数据---
+        
+        //更新点光源数据
         lightP->position = pointPosition;
 
         //绑定当前使用的shader着色
         testshader->use();
 
         //设置渲染所需的最新数据 传递给shader着色器 灯光数据（平行光，方向光，点光源，环境光，MVP矩阵，相机数据）
-        testshader->SetRenderingData(modelMat, viewMat, projMat, abColor, lightD, lightP, lightS, myCamera);
+        testshader->SetRenderingData(model.modelMatrix, viewMat, projMat, abColor, lightD, lightP, lightS, myCamera);
 
         //调用绘制每一个mesh对象
         model.Draw(testshader);
-        
+
+
+        //----------------------------------------绘制灯光控件-------------------------
         //绑定 灯光绘制的 shader着色
         lightShader->use();
         
         //设置 灯光绘制所需的数据并传递
-        //---更新模型 变换矩阵M --
-        //缩放
+        //更新模型 变换矩阵M
         modelMat = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
-        //旋转
         modelMat = glm::rotate(modelMat, glm::radians(lightangle), glm::vec3(0.0f, 1.0f, 0.0f));
-        //平移
         modelMat = glm::translate(modelMat, pointPosition);
-
+     
         lightShader->SetRenderingData(modelMat, viewMat, projMat,myCamera);
 
         //绘制辅助灯光控件，方便观察（用box标志）
         unsigned int VAO,VBO;
-        Model::DrawLight(VAO,VBO);
+        DrawGizmo::DrawBox(VAO,VBO);
    
 	
 
@@ -413,6 +409,7 @@ int main(int argc, char* argv[])
             
             // 调节模型旋转
             ImGui::SliderFloat("angle", &angle, 0.0f, 360.0f);
+            ImGui::SliderFloat("lightangle", &lightangle, 0.0f, 360.0f);
             
             ImGui::ColorEdit3("clear color", (float*)&clear_color); 
 

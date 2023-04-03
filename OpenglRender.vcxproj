@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\DrawGizmo.cpp" />
     <ClCompile Include="Src\imgui\imgui.cpp" />
     <ClCompile Include="Src\imgui\imgui_demo.cpp" />
     <ClCompile Include="Src\imgui\imgui_draw.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\DrawGizmo.h" />
     <ClInclude Include="Src\imgui\imconfig.h" />
     <ClInclude Include="Src\imgui\imgui.h" />
     <ClInclude Include="Src\imgui\imgui_impl_glfw_gl3.h" />

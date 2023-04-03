@@ -25,12 +25,12 @@ Mesh::~Mesh()
 
 void Mesh::Draw(Shader* shader)
 {
-	//±éÀúmeshµÄÎÆÀíÁÐ±í£¬°ó¶¨ÐèÒªÊ¹ÓÃµÄÎÆÀíÊý¾Ý£¬´«µÝ¸øshader
+	//ï¿½ï¿½ï¿½ï¿½meshï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÊ¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½shader
 	for (unsigned int i =0; i <textures.size(); i++)
 	{
 		if(textures[i].type =="texture_diffuse")
 		{
-			//ÎÆÀí1 °ó¶¨
+			//ï¿½ï¿½ï¿½ï¿½1 ï¿½ï¿½
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D,textures[i].id);
 			shader->SetUniform1i("material.diffuse",0);
@@ -38,7 +38,7 @@ void Mesh::Draw(Shader* shader)
 		}
 		else if (textures[i].type == "texture_specular")
 		{
-			//ÎÆÀí2 °ó¶¨
+			//ï¿½ï¿½ï¿½ï¿½2 ï¿½ï¿½
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 			shader->SetUniform1i("material.specular", 1);
@@ -48,17 +48,17 @@ void Mesh::Draw(Shader* shader)
 	}
 
 
-	//°ó¶¨vao
+	//ï¿½ï¿½vao
 	glBindVertexArray(VAO);
 	//glDrawArrays(GL_TRIANGLES, 0, 36);
 
-	//dracall»æÖÆ
+	//dracallï¿½ï¿½ï¿½ï¿½
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0 );
 
-	//½â°óvao
+	//ï¿½ï¿½ï¿½vao
 	glBindVertexArray(0);
 
-	//½â°óÎÆÀíÖ¸ÏòÖØÖÃ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	glActiveTexture(GL_TEXTURE0);
 }
 

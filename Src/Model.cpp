@@ -1,14 +1,20 @@
 #include "Model.h"
 #include "stb_image.h"
 
-//³õÊ¼»¯Êý¾Ý
+//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 Model::Model(std::string path)
 {
+	modelMatrix = scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
 
 	loadModel(path);
 }
 
-//»æÖÆdrawcall ËùÓÐ°üº¬µÄmesh¶ÔÏó
+void Model::ResetTransform()
+{
+	modelMatrix = scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
+}
+
+//ï¿½ï¿½ï¿½ï¿½drawcall ï¿½ï¿½ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½meshï¿½ï¿½ï¿½ï¿½
 void Model::Draw(Shader* shader)
 {
 	for (unsigned int i =0; i<meshes.size(); i ++)
@@ -19,12 +25,12 @@ void Model::Draw(Shader* shader)
 }
 
 
-//´ÓÎÄ¼þµ¼ÈëÄ£ÐÍ£¬´¦ÀíobjÎÄ¼þÖÐµÄ½Úµã
+//ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½objï¿½Ä¼ï¿½ï¿½ÐµÄ½Úµï¿½
 void Model::loadModel(std::string path)
 {
 	Assimp::Importer importer;
 	
-	//»ñÈ¡objÎÄ¼þÖÐµÄ¸ù½Úµã
+	//ï¿½ï¿½È¡objï¿½Ä¼ï¿½ï¿½ÐµÄ¸ï¿½ï¿½Úµï¿½
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs |aiProcess_CalcTangentSpace );
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
@@ -35,32 +41,32 @@ void Model::loadModel(std::string path)
 
 	}
 
-	//³õÊ¼»¯ Ä£ÐÍÎÆÀí ´æ·ÅÂ·¾¶
+	//ï¿½ï¿½Ê¼ï¿½ï¿½ Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	directory = path.substr(0, path.find_last_of('\\'));
 	std::cout << "Success" + directory << std::endl;
 
-	//´¦Àí½Úµã
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
 	processNode(scene->mRootNode, scene);
 }
 
 
-//µÝ¹é²éÕÒÃ¿Ò»¸ö½Úµã ²¢²åÈëmeshÈÝÆ÷
+//ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½Ã¿Ò»ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½meshï¿½ï¿½ï¿½ï¿½
 void Model::processNode(aiNode* node, const  aiScene* scene)
 {
-	//------------------------µÝ¹éÖ´ÐÐÄÚÈÝ-------------------------------------//
+	//------------------------ï¿½Ý¹ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-------------------------------------//
 	std::cout << node->mName.data << std::endl;
 
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* curMesh = scene->mMeshes[node->mMeshes[i]];
 
-		//´ÓÎÄ¼þÖÐ ²åÈëmeshÈÝÆ÷
+		//ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½meshï¿½ï¿½ï¿½ï¿½
 		meshes.push_back(processMesh(curMesh, scene));
 	}
 	//-------------------------------------------------------------//
 
 
-	//µÝ¹é
+	//ï¿½Ý¹ï¿½
 	for (unsigned int i =0;  i < node->mNumChildren; i++)
 	{
 		processNode(node->mChildren[i], scene);
@@ -71,14 +77,14 @@ void Model::processNode(aiNode* node, const  aiScene* scene)
 
 
 
-//´Ó½ÚµãÖÐÌáÈ¡meshµÄÊôÐÔ£¬²¢×é³ÉÒ»¸ömeshÀà·µ»Ø
+//ï¿½Ó½Úµï¿½ï¿½ï¿½ï¿½ï¿½È¡meshï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½meshï¿½à·µï¿½ï¿½
 Mesh Model::processMesh(aiMesh* aimesh, const aiScene* scene)
 {
 	std::vector<Vertex> tempVertices;
 	std::vector<unsigned int> tempIndices;
 	std::vector<Texture> TempTextures;
 
-	//½«ÎÄ¼þmeshµÄ ¶¥µã£¬·¨Ïß£¬uv ¹áÈëÁÙÊ±£¬²¢¹¹½¨mesh¶ÔÏó
+	//ï¿½ï¿½ï¿½Ä¼ï¿½meshï¿½ï¿½ ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ß£ï¿½uv ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½meshï¿½ï¿½ï¿½ï¿½
 	glm::vec3 tempVec;
 	for (unsigned int i =0; i <  aimesh->mNumVertices ; i++)
 	{
@@ -114,13 +120,13 @@ Mesh Model::processMesh(aiMesh* aimesh, const aiScene* scene)
 	
 	}
 
-	 //Í¨¹ýmeshµÄË÷Òý ÄÃµ½ ²ÄÖÊ¶ÔÏó
+	 //Í¨ï¿½ï¿½meshï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ãµï¿½ ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½
 	 aiMaterial* material = scene->mMaterials[aimesh->mMaterialIndex];
 
-	 // 1. ¶ÁÈ¡ËùÓÐ¶ÔÓ¦ texture_diffuseµÄ ÎÆÀíÁÐ±í
+	 // 1. ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð¶ï¿½Ó¦ texture_diffuseï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 	 std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 
-	 // 2. ¶ÁÈ¡ËùÓÐ¶ÔÓ¦ texture_specular ÎÆÀíÁÐ±í
+	 // 2. ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð¶ï¿½Ó¦ texture_specular ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 	 std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 
 	
@@ -128,7 +134,7 @@ Mesh Model::processMesh(aiMesh* aimesh, const aiScene* scene)
 	 TempTextures.insert(TempTextures.end(), specularMaps.begin(), specularMaps.end());
 
 
-	 //¹¹½¨meshÀà  mesh ¶ÔÓ¦µÄ¶¥µã£¬uv£¬¶¥µãË÷Òý
+	 //ï¿½ï¿½ï¿½ï¿½meshï¿½ï¿½  mesh ï¿½ï¿½Ó¦ï¿½Ä¶ï¿½ï¿½ã£¬uvï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 return Mesh(tempVertices, tempIndices, TempTextures);
 
 
@@ -139,19 +145,19 @@ Mesh Model::processMesh(aiMesh* aimesh, const aiScene* scene)
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
 
-	// ´æ·Å·µ»ØµÄtexture ÁÐ±í
+	// ï¿½ï¿½Å·ï¿½ï¿½Øµï¿½texture ï¿½Ð±ï¿½
 	std::vector<Texture> textures;
 	
-	//±éÀúµ±Ç° aimesh Ð¯´øµÄËùÓÐ²ÄÖÊ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç° aimesh Ð¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
 	for (unsigned int i=0;i <mat->GetTextureCount(type);i++)
 	{
 		aiString str;
-		//¸ù¾ÝaiTextureType ÀàÐÍ ÄÃµ½ÎÆÀíÃû×Ö ±ÈÈç  "glass_dif.png"
+		//ï¿½ï¿½ï¿½ï¿½aiTextureType ï¿½ï¿½ï¿½ï¿½ ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½  "glass_dif.png"
 		mat->GetTexture(type, i, &str);
 
 		bool skip = false;
 		
-		//ÅÐ¶ÏÌùÍ¼ÊÇ·ñÒÑ¾­´æÔÚ	£¬Èç¹ûÊÇ Ö±½Ó¸½¼Óµ½ÁÐ±íÖÐ
+		//ï¿½Ð¶ï¿½ï¿½ï¿½Í¼ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ö±ï¿½Ó¸ï¿½ï¿½Óµï¿½ï¿½Ð±ï¿½ï¿½ï¿½
 		for (unsigned int j =0; j<textures_loaded.size(); j++)
 		{
 			if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
@@ -163,7 +169,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType 
 			}
 		}
 
-		// Èç¹ûÉÏÃæ²»´æÔÚ£¬¾Í¹¹½¨Texture ¶ÔÏó£¬²¢²åÈëµ½textures_loaded ÒÔ¼°textures ÖÐ
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ²»ï¿½ï¿½ï¿½Ú£ï¿½ï¿½Í¹ï¿½ï¿½ï¿½Texture ï¿½ï¿½ï¿½ó£¬²ï¿½ï¿½ï¿½ï¿½ëµ½textures_loaded ï¿½Ô¼ï¿½textures ï¿½ï¿½
 		if (!skip)
 		{
 			Texture texture;
@@ -245,7 +251,7 @@ void Model::DrawLight(unsigned int &VAO,unsigned int &VBO )
 	
 }
 
-//½«ÎÆÀí´ÓÎÄ¼þÖÐ µ¼³öGPU  ²¢·µ»Øbuffer id
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½GPU  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½buffer id
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma)
 {
 	std::string filename = std::string(path);
