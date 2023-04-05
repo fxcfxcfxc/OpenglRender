@@ -43,7 +43,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 		//printf(fragmentSource);
 		
 
-		//´´½¨ vertexshader  fragmentshader ¶ÔÏó
+		//ï¿½ï¿½ï¿½ï¿½ vertexshader  fragmentshader ï¿½ï¿½ï¿½ï¿½
 		unsigned int vertex, fragment;
 
 		vertex = glCreateShader(GL_VERTEX_SHADER);
@@ -57,7 +57,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 		checkCompileErrors(fragment,"FRAGMENT");
 
 
-		// ´´½¨Ò»¸öProgram¶ÔÏó£¬ ²¢ attachÉÏ  vertex ºÍ fragment
+		// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Programï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ attachï¿½ï¿½  vertex ï¿½ï¿½ fragment
 		ID = glCreateProgram();
 		glAttachShader(ID, vertex);
 		glAttachShader(ID, fragment);
@@ -65,7 +65,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 		checkCompileErrors(ID, "PROGRAM");
 
 
-		//Ê¹ÓÃºóÉ¾³ý
+		//Ê¹ï¿½Ãºï¿½É¾ï¿½ï¿½
 		glDeleteShader(vertex);
 		glDeleteShader(fragment);
 
@@ -136,20 +136,20 @@ void Shader::checkCompileErrors(unsigned int ID, std::string type)
 void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p, glm::vec3 ambientColor,LightDirectional* lightD, LightPoint* lightP,LightSpot* lightS,Camera currentCamera)
 {
 	
-	//¾ØÕóÊý¾Ý´«Èë
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½
 	glUniformMatrix4fv(glGetUniformLocation(ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(m));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(v));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "projMat"), 1, GL_FALSE, glm::value_ptr(p));
 
-	//»·¾³¹â
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	glUniform3f(glGetUniformLocation(ID, "ambientColor"), ambientColor.x,ambientColor.y, ambientColor.z);
             
-	//Æ½ÐÐ¹âÊý¾Ý
+	//Æ½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½
 	glUniform3f(glGetUniformLocation(ID, "lightd.pos"), lightD->position.x, lightD->position.y, lightD->position.z);
 	glUniform3f(glGetUniformLocation(ID, "lightd.direction"), lightD->direction.x, lightD->direction.y, lightD->direction.z);
 	glUniform3f(glGetUniformLocation(ID, "lightd.color"), lightD->color.x, lightD->color.y, lightD->color.z);
 
-	//µã¹âÔ´Êý¾Ý
+	//ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½
 	glUniform3f(glGetUniformLocation(ID, "lightP.pos"), lightP->position.x, lightP->position.y, lightP->position.z );
 	glUniform3f(glGetUniformLocation(ID, "lightP.color"), lightP->color.x, lightP->color.y, lightP->color.z);
 	glUniform1f(glGetUniformLocation(ID, "lightP.constant"), lightP->constant);
@@ -157,26 +157,26 @@ void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p, glm::vec3 am
 	glUniform1f(glGetUniformLocation(ID, "lightP.quadratic"), lightP->quadratic);
 
 
-	//¾Û¹âµÆ
+	//ï¿½Û¹ï¿½ï¿½
 	glUniform3f(glGetUniformLocation(ID, "lightS.pos"), lightS->position.x, lightS->position.y, lightS->position.z );
 	glUniform3f(glGetUniformLocation(ID, "lightS.color"), lightS->color.x, lightS->color.y, lightS->color.z );
 	glUniform3f(glGetUniformLocation(ID, "lightS.direction"), lightS->direction.x, lightS->direction.y, lightS->direction.z );
 	glUniform1f(glGetUniformLocation(ID, "lightS.cosPhyInner"), lightS->cosPhyInner );
 	glUniform1f(glGetUniformLocation(ID, "lightS.cosPhyOut"), lightS->cosPhyOut );
 
-	//Ïà»úÊý¾Ý
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	glUniform3f( glGetUniformLocation(ID,"cameraPos"), currentCamera.Position.x, currentCamera.Position.y, currentCamera.Position.z);
 
-	//²ÄÖÊ²ÎÊý
+	//ï¿½ï¿½ï¿½Ê²ï¿½ï¿½ï¿½
 	SetUniform3f("material.ambient", glm::vec3(1.0f, 1.0f, 1.0f));
 	SetUniform1f("material.shininess",64.0f);
 	
 }
 
-void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p, Camera currentCamera)
+void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p)
 {
 		
-	//¾ØÕóÊý¾Ý´«Èë
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½
 	glUniformMatrix4fv(glGetUniformLocation(ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(m));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(v));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "projMat"), 1, GL_FALSE, glm::value_ptr(p));

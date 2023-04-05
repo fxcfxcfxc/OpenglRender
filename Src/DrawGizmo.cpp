@@ -1,4 +1,9 @@
 #include "DrawGizmo.h"
+
+#include <GLFW/glfw3native.h>
+#include <GLFW/glfw3native.h>
+#include "DrawGizmo.h"
+
 void DrawGizmo::DrawBox(unsigned int &VAO,unsigned int &VBO)
 {
     float vertices[] = {
@@ -64,7 +69,10 @@ void DrawGizmo::DrawBox(unsigned int &VAO,unsigned int &VBO)
 }
 
 
-void DrawGizmo::SetMatrix()
+void DrawGizmo::SetGizmoShader(Shader* GizmoShader,glm::mat4 m, glm::mat4 v, glm::mat4 p)
 {
- 
+ GizmoShader->use();
+ GizmoShader->SetRenderingData(m, v, p);
 }
+
+glm::mat4  DrawGizmo::mMatrix;

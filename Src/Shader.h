@@ -21,21 +21,21 @@ public:
 	unsigned int ID;
 
 	
-	//¹¹Ôì
+	//ï¿½ï¿½ï¿½ï¿½
 	Shader(const char* vertexPath, const char* fragmentPath);
 	
-	//°ó¶¨µ±Ç°openglÊ¹ÓÃµÄshader id
+	//ï¿½ó¶¨µï¿½Ç°openglÊ¹ï¿½Ãµï¿½shader id
 	void use();
 
-	//´«µİshader²ÎÊı
+	//ï¿½ï¿½ï¿½ï¿½shaderï¿½ï¿½ï¿½ï¿½
 	void SetUniform3f(const char* Name, glm::vec3 param);
 	void SetUniform1f(const char* Name, float Param);
 	void SetUniform1i(const char* Name, int slot);
 
-	//ÎªshaderÉèÖÃËùĞèµÄäÖÈ¾²ÎÊı
+	//Îªshaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½
 	void SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p, glm::vec3 ambientColor,LightDirectional* lightD, LightPoint* lightP,LightSpot* lightS,Camera currentCamera) ;
-	// ¿ÉÒÔÓÃÀ´ÉèÖÃµÆ¹â¸¨ÖúÏÔÊ¾µÄÊı¾İ
-	void SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p, Camera currentCamera) ;
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÃµÆ¹â¸¨ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	void SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p) ;
 
 	enum Slot
 	{
@@ -45,7 +45,7 @@ public:
 
 private:
 
-	//¼ì²â±àÒë
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void checkCompileErrors(unsigned int ID,std:: string type);
 };
 

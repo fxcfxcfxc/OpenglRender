@@ -1,6 +1,6 @@
 #pragma once
 #include    <iostream>
-
+#include <direct.h>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -95,6 +95,19 @@ Camera myCamera(glm::vec3(0, 0.5f, 3.0f), glm::radians(-15.0f), glm::radians(180
 float lastX;
 float lastY;
 bool firstMouse = true;
+
+std::string GetFilePath()
+{
+    char* path = nullptr;
+    path = _getcwd(nullptr,1);
+    puts(path);
+
+    std::string filePath(path);
+    return filePath;
+
+    delete path;
+    path = nullptr;
+}
 
 
 void processInput(GLFWwindow*  window) 
@@ -299,7 +312,8 @@ int main(int argc, char* argv[])
 
 // 创建model
 #pragma region Init and Load Models to VAO VBO
-    Model model( "E:\\Project\\Opengl\\model\\nanosuit.obj");
+    std::string projectPath = GetFilePath() + "\\model\\nanosuit.obj";
+    Model model( projectPath);
  #pragma endregion
  
 
@@ -326,11 +340,9 @@ int main(int argc, char* argv[])
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    //模型位移
+    //记录 模型位移值
     glm::vec3 t = glm::vec3(0.0f, -10.0f, 0.0f);
-
-
-    //模型旋转
+    //记录 模型旋转值
     float angle = 0;
 
     float lightangle = 0;
@@ -385,12 +397,13 @@ int main(int argc, char* argv[])
         
         //设置 灯光绘制所需的数据并传递
         //更新模型 变换矩阵M
-        modelMat = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
-        modelMat = glm::rotate(modelMat, glm::radians(lightangle), glm::vec3(0.0f, 1.0f, 0.0f));
-        modelMat = glm::translate(modelMat, pointPosition);
-     
-        lightShader->SetRenderingData(modelMat, viewMat, projMat,myCamera);
+        DrawGizmo::mMatrix = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
+        DrawGizmo::mMatrix = glm::rotate(DrawGizmo::mMatrix, glm::radians(lightangle), glm::vec3(0.0f, 1.0f, 0.0f));
+        DrawGizmo::mMatrix = glm::translate(DrawGizmo::mMatrix, pointPosition);
 
+        //更新矩阵，shader
+        DrawGizmo::SetGizmoShader(lightShader,DrawGizmo::mMatrix,viewMat,projMat);
+        
         //绘制辅助灯光控件，方便观察（用box标志）
         unsigned int VAO,VBO;
         DrawGizmo::DrawBox(VAO,VBO);
