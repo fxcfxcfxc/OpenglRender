@@ -32,10 +32,10 @@ public:
 	//
 	std::string directory;
 
-	//meshªÊ÷∆
+	//mesh????
 	void Draw(Shader* shader);
 
-	//µ∆π‚ªÊ÷∆
+	//??????
 	static  void DrawLight(unsigned int &VAO,unsigned int &VBO);
 
 	//

@@ -56,7 +56,7 @@ uniform vec3 cameraPos;
 out vec4 FragColor;
 
 
-//Æ½ÐÐ¹â
+//Æ½ï¿½Ð¹ï¿½
 vec3 GetDirectionLight( LightDirection ld, vec3 nDirWS, vec3 vDirWS ,vec3 posWS ,Material mat,vec2 TexCoord)
 {
     vec3 directionOut; 
@@ -78,7 +78,7 @@ vec3 GetDirectionLight( LightDirection ld, vec3 nDirWS, vec3 vDirWS ,vec3 posWS 
 }
 
 
-//µã¹âÔ´
+//ï¿½ï¿½ï¿½Ô´
 vec3 GetPointLight( LightPoint lP, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material mat,vec2 TexCoord)
 {
     vec3 PointOut;
@@ -91,9 +91,10 @@ vec3 GetPointLight( LightPoint lP, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Materi
 //speuclar
    vec3 rDir =  normalize( reflect(-lDirWS,nDirWS) ); 
    vec3 specularTexture = texture(mat.specular, TexCoord).rgb ;
-   vec3 specular = pow( max(dot(rDir, vDirWS),0 ) ,mat.shininess) * lP.color * specularTexture;
+   //vec3 specular = pow( max(dot(rDir, vDirWS),0 ) ,mat.shininess) * lP.color  * specularTexture;
+   vec3 specular = pow( max(dot(rDir, vDirWS),0 ) ,mat.shininess) * lP.color ;
 
-//attenuation ¾àÀëË¥¼õ
+//attenuation ï¿½ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½
     float Pointdistance = length(lP.pos - posWS);
     float attenuation  =1.0/ (lP.constant + lP.linear *Pointdistance + lP.quadratic * Pointdistance * Pointdistance);
 
@@ -103,7 +104,7 @@ vec3 GetPointLight( LightPoint lP, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Materi
   return PointOut;
 }
 
-//¾Û¹âµÆ
+//ï¿½Û¹ï¿½ï¿½
 vec3 GetSpotLight( LightSpot lS, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material mat,vec2 TexCoord)
 {
     vec3 SpotOut;
@@ -119,16 +120,16 @@ vec3 GetSpotLight( LightSpot lS, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material
    vec3 specularTexture = texture(mat.specular, TexCoord).rgb ;
    vec3 specular = pow( max(dot(rDir, vDirWS),0 ) ,mat.shininess) * lS.color * specularTexture;
 
-//attenuation ¾àÀëË¥¼õ
+//attenuation ï¿½ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½
     //float Pointdistance = length(LightPos - posWS);
     //float attenuation  =1.0/ (lS.constant + lS.linear *Pointdistance + lS.quadratic * Pointdistance * Pointdistance);
 
 //merge
-        // ¼ÆËãµ±Ç°½Ç¶È
+        // ï¿½ï¿½ï¿½ãµ±Ç°ï¿½Ç¶ï¿½
         float cosTheta = dot( normalize (posWS - lS.pos), -1 * lDirWS );
 
 
-        //¼ÆËãËùÔÚ½Ç¶ÈÇøÓò¶ÔÓ¦µÄË¥¼õÇ¿¶È
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú½Ç¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Ë¥ï¿½ï¿½Ç¿ï¿½ï¿½
         float spotRatio = 0;
         if(cosTheta > lS.cosPhyInner)
         {               
@@ -162,8 +163,8 @@ void main()
 
          vec3 LightMergeColor;
 
-         LightMergeColor += GetDirectionLight(lightd, nDirWS, vDirWs, posWS, material, TexCoord) * 0.5;
-         LightMergeColor += GetPointLight(lightP, nDirWS, vDirWs, posWS, material, TexCoord)* 0.5;
+         //LightMergeColor += GetDirectionLight(lightd, nDirWS, vDirWs, posWS, material, TexCoord) * 0.5;
+         LightMergeColor += GetPointLight(lightP, nDirWS, vDirWs, posWS, material, TexCoord);
          //LightMergeColor += GetSpotLight(lightS, nDirWS, vDirWs, posWS, material, TexCoord)* 0.5;
     
 

@@ -202,7 +202,7 @@ LightDirectional * lightD = new LightDirectional(glm::vec3(0.0f, 4.0f ,0.0f),
                                                  glm::vec3(1.0f, 1.0f, 1.0f));
 
 //实例化点光
-LightPoint* lightP = new LightPoint(glm::vec3(0.2f, -2.0f, 0.0f),
+LightPoint* lightP = new LightPoint(glm::vec3(-3.0f, 5.0f, 6.0f),
                                     glm::vec3(glm::radians(90.0f), 0, 0), 
                                     glm::vec3(3.0f, 1.0f, 0.0f));
 
@@ -338,6 +338,7 @@ int main(int argc, char* argv[])
     ImGui::StyleColorsDark();
     bool show_demo_window = true;
     bool show_another_window = false;
+    
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     //记录 模型位移值
@@ -348,7 +349,7 @@ int main(int argc, char* argv[])
     float lightangle = 0;
 
     //创建环境光颜色
-    glm::vec3 abColor = glm::vec3(1.0f, 0.1f, 0.4f);
+    glm::vec3 abColor = glm::vec3(0.2f, 0.1f, 0.4f);
 
     //
     glm::vec3 pointPosition = glm::vec3(lightP->position);
@@ -370,16 +371,17 @@ int main(int argc, char* argv[])
         ImGui_ImplGlfwGL3_NewFrame();
 
         //--------------------------------------绘制mesh----------------------------
-        //对模型做变换  model矩阵
+        //设置模型做变换  model矩阵
         model.ResetTransform();
         model.modelMatrix = glm::rotate(model.modelMatrix, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
         model.modelMatrix = glm::translate(model.modelMatrix, t);
 
-        //更新相机数据 V矩阵
+        //设置相机数据 V矩阵
         viewMat = myCamera.GetViewMatrix();
         
         //更新点光源数据
         lightP->position = pointPosition;
+        lightP->color = glm::vec3(clear_color.x,clear_color.y,clear_color.z);
 
         //绑定当前使用的shader着色
         testshader->use();
@@ -391,17 +393,14 @@ int main(int argc, char* argv[])
         model.Draw(testshader);
 
 
-        //----------------------------------------绘制灯光控件-------------------------
-        //绑定 灯光绘制的 shader着色
-        lightShader->use();
-        
+        //----------------------------------------绘制灯光控件显示-------------------------
         //设置 灯光绘制所需的数据并传递
-        //更新模型 变换矩阵M
+        //更新 M矩阵
         DrawGizmo::mMatrix = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
         DrawGizmo::mMatrix = glm::rotate(DrawGizmo::mMatrix, glm::radians(lightangle), glm::vec3(0.0f, 1.0f, 0.0f));
         DrawGizmo::mMatrix = glm::translate(DrawGizmo::mMatrix, pointPosition);
 
-        //更新矩阵，shader
+        //设置矩阵，shader
         DrawGizmo::SetGizmoShader(lightShader,DrawGizmo::mMatrix,viewMat,projMat);
         
         //绘制辅助灯光控件，方便观察（用box标志）
