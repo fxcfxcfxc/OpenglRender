@@ -82,6 +82,19 @@ glm::vec3 cubePositions[] = {
   glm::vec3(1.5f,  0.2f, -1.5f),
   glm::vec3(-1.3f,  1.0f, -1.5f)
 };
+
+float transparentVertices[]= {
+        0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+        0.0f, -0.5f,  0.0f,  0.0f,  1.0f,
+        1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
+
+        0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+        1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
+        1.0f,  0.5f,  0.0f,  1.0f,  0.0f
+};
+
+
+
 #pragma endregion
 
 //创建相机
@@ -354,6 +367,20 @@ int main(int argc, char* argv[])
     //
     glm::vec3 pointPosition = glm::vec3(lightP->position);
 
+    // 加载贴图
+    unsigned int transparentTexture = LoadImageToGPU();
+
+    //窗户 VAO
+    unsigned int transparentVAO, transparentVBO;
+    glGenVertexArrays(1,&transparentVAO);
+    glGenBuffers(1,&transparentVBO);
+    glBindVertexArray(transparentVAO);
+    glBindBuffer( GL_ARRAY_BUFFER,transparentVBO );
+    glBufferData( GL_ARRAY_BUFFER,sizeof(transparentVertices), transparentVertices,GL_STATIC_DRAW );
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float),(void*)(3 *sizeof(float)) );
     
     ////----------------------------------Render Loop 渲染循环 -------------------------  
     while (!glfwWindowShouldClose(window))
@@ -392,6 +419,23 @@ int main(int argc, char* argv[])
         //调用绘制每一个mesh对象
         model.Draw(testshader);
 
+
+        //------------------------------------透明混合------------------------------
+        //开启混合设置
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        
+        //设置使用的混合shader
+            
+        //传递参数
+
+        //绑定vao
+
+        //绑定纹理
+        
+        
+        
+        
 
         //----------------------------------------绘制灯光控件显示-------------------------
         //设置 灯光绘制所需的数据并传递
