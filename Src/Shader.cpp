@@ -176,7 +176,7 @@ void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p, glm::vec3 am
 void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p)
 {
 		
-	//???????????
+
 	glUniformMatrix4fv(glGetUniformLocation(ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(m));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(v));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "projMat"), 1, GL_FALSE, glm::value_ptr(p));
