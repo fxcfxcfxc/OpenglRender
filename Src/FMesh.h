@@ -6,16 +6,18 @@
 #include "shader.h"
 #include <gl/glew.h>
 
-struct Vertex {
+
+#include "Material.h"
+
+struct MeshVertex {
 
 	glm::vec3 Position;
 	glm::vec3 Normal;
 	glm::vec2 TexCoords;
 
 };
-#include "Material.h"
 
-struct Texture{
+struct MeshTexture{
 	unsigned int id;
 	std::string type;
 	std::string path;
@@ -25,25 +27,25 @@ struct Texture{
 /**
  * \brief 一个mesh 包含 顶点数据，顶点索引，纹理
  */
-class Mesh
+class FMesh
 {
 public:
 	//field
 	//顶点列表
-	std::vector<Vertex> vertices;
+	std::vector<MeshVertex> vertices;
 	
 	//顶点索引列表
 	std::vector<unsigned int> indices;
 	
 	//纹理列表
-	std::vector<Texture> textures;
+	std::vector<MeshTexture> textures;
 
 	//function
-	Mesh(float v[]);
+	FMesh(float v[]);
 	
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+	FMesh(std::vector<MeshVertex> vertices, std::vector<unsigned int> indices, std::vector<MeshTexture> textures);
 	
-	~Mesh();
+	~FMesh();
 	
 	//调用drawcall绘制
 	void Draw(Shader* shader);

@@ -7,8 +7,8 @@
 #include <GLFW/glfw3.h>
 #include "Shader.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+// #define STB_IMAGE_IMPLEMENTATION
+// #include "stb_image.h"
 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
@@ -23,9 +23,9 @@
 #include "Model.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw_gl3.h"
+#include "Texture.h"
 
 //手动模型数据
-unsigned int loadTexture(const char *path);
 #pragma region Model Data
 float vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -207,137 +207,13 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos)
 }
 #pragma endregion
 
-//创建灯光
-#pragma region Init Light
-
-//实例化平行光
-LightDirectional * lightD = new LightDirectional(glm::vec3(0.0f, 4.0f ,0.0f),
-                                                 glm::vec3(glm::radians(45.0f),0,0),
-                                                 glm::vec3(1.0f, 1.0f, 1.0f));
-
-//实例化点光
-LightPoint* lightP = new LightPoint(glm::vec3(-3.0f, 5.0f, 6.0f),
-                                    glm::vec3(glm::radians(90.0f), 0, 0), 
-                                    glm::vec3(3.0f, 1.0f, 0.0f));
-
-//实例化聚光灯
-LightSpot* lightS = new LightSpot(glm::vec3(0.0f, 4.0f, 0.0f),
-                                  glm::vec3(glm::radians(90.0f), 0, 0),
-                                  glm::vec3(1.0f, 1.0f, 2.0f));
-
-#pragma endregion
-
-unsigned int LoadImageToGPU(const char* FileName,GLint   InternalFormat,GLenum Format, int TextureSlot)
-{
-    unsigned int TexBuffer;
-    glGenTextures(1, &TexBuffer);
-    glActiveTexture(GL_TEXTURE0 * TextureSlot);
-    glBindTexture(GL_TEXTURE_2D, TexBuffer);
-
-    int width, height, nrChannel;
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char* data = stbi_load(FileName, &width, &height, &nrChannel, 0);
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, InternalFormat, width, height, 0, Format, GL_UNSIGNED_BYTE,data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        printf("load image failed");
-
-    }
-    stbi_image_free(data);
-    return TexBuffer;
-
-}
-
-unsigned int loadTexture(char const * path)
-{
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-
-    int width, height, nrComponents;
-    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
-    if (data)
-    {
-        GLenum format;
-        if (nrComponents == 1)
-            format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
-
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, format == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT); // for this tutorial: use GL_CLAMP_TO_EDGE to prevent semi-transparent borders. Due to interpolation it takes texels from next repeat 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, format == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        stbi_image_free(data);
-    }
-    else
-    {
-        std::cout << "Texture failed to load at path: " << path << std::endl;
-        stbi_image_free(data);
-    }
-
-    return textureID;
-}
-
-//????????????? ????GPU  ??????buffer id
-unsigned int TextureFromFile(const std::string directory)
-{
-    std::string filename = directory;
-
-
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-
-    int width, height, nrComponents;
-    unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-    if (data)
-    {
-        GLenum format;
-        if (nrComponents == 1)
-            format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
-
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        stbi_image_free(data);
-    }
-    else
-    {
-        std::cout << "Texture failed to load at path: "  << std::endl;
-        stbi_image_free(data);
-    }
-
-    return textureID;
-}
 
 int main(int argc, char* argv[]) 
-{   
+{
+    
     std::string exePath = argv[0];
-    //std::cout << exePath.substr(0, exePath.find_last_of('\\')) +"\\model\\nanosuit.obj" << std::endl;
 
-
-
-//创建窗口
+// 创建窗口
 #pragma region OpenWindow   
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -382,8 +258,7 @@ int main(int argc, char* argv[])
 
 #pragma endregion
     
-
-//创建shader对象  负责读取顶点和片元着色器文件，并创建shader程序
+// 创建shader  
 #pragma region Init Shader Program
     //创建一个Mesh 需要用到的shader
     Shader* testshader = new Shader("Shader/vertexSource.vert", "Shader/fragmentSource.frag");
@@ -396,7 +271,7 @@ int main(int argc, char* argv[])
     //Shader* blendShader = new Shader("Shader/LightvertexSource.vert", "Shader/LightfragmentSource.frag");
 #pragma endregion  
 
-//创建Material对象 读取图片，初始化传入shader的参数
+// 创建Material
 #pragma region Init Material  Data
 //--------------------------Creat Material
 //Material* myMaterial = new Material(testshader,
@@ -411,64 +286,104 @@ int main(int argc, char* argv[])
     std::string projectPath = GetFilePath() + "\\model\\nanosuit.obj";
     Model model( projectPath);
  #pragma endregion
- 
-
-//模型变化的矩阵数据
+    
+// 创建相机
 #pragma region MVP vertex
-
-    //-----------------------------------------MVP  Matrices
-    glm::mat4 trans;
-    //model->world
-    glm::mat4 modelMat;
     //world->view
     glm::mat4 viewMat; 
     //view-> clipspace
     glm:: mat4 projMat;  
     projMat = glm:: perspective(glm::radians(45.0f), 1600.0f / 1200.0f,  0.1f, 100.0f);
+#pragma endregion
 
+// 创建纹理
+#pragma region create Texture
+    // 加载贴图
+    FTexture* windowTexture =new FTexture("E:\\Project\\Opengl\\resource\\window.png");  
+#pragma endregion
+
+// 创建灯光
+#pragma region Init Light
+
+    //实例化平行光
+    LightDirectional * lightD = new LightDirectional(glm::vec3(0.0f, 4.0f ,0.0f),
+                                                     glm::vec3(glm::radians(45.0f),0,0),
+                                                     glm::vec3(1.0f, 1.0f, 1.0f));
+
+    //实例化点光
+    LightPoint* lightP = new LightPoint(glm::vec3(-3.0f, 5.0f, 6.0f),
+                                        glm::vec3(glm::radians(90.0f), 0, 0), 
+                                        glm::vec3(3.0f, 1.0f, 0.0f));
+
+    //实例化聚光灯
+    LightSpot* lightS = new LightSpot(glm::vec3(0.0f, 4.0f, 0.0f),
+                                      glm::vec3(glm::radians(90.0f), 0, 0),
+                                      glm::vec3(1.0f, 1.0f, 2.0f));
 
 #pragma endregion
 
+    
+// imgui数据
+#pragma region create transform
     ImGui::CreateContext();
     ImGui_ImplGlfwGL3_Init(window, true);
     ImGui::StyleColorsDark();
     bool show_demo_window = true;
     bool show_another_window = false;
-    
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     //记录 模型位移值
     glm::vec3 t = glm::vec3(0.0f, -10.0f, 0.0f);
+    
     //记录 模型旋转值
     float angle = 0;
-
-    float lightangle = 0;
 
     //创建环境光颜色
     glm::vec3 abColor = glm::vec3(0.2f, 0.1f, 0.4f);
 
-  
+
+    //Gizmo 变化
+    float lightangle = 0;
+    //灯光位置
     glm::vec3 pointPosition = glm::vec3(lightP->position);
 
-    // 加载贴图
-    unsigned int transparentTexture = TextureFromFile("E:\\Project\\Opengl\\resource\\window.png");
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    //窗户 VAO
-    unsigned int transparentVAO, transparentVBO;
-    glGenVertexArrays(1,&transparentVAO);
-    glGenBuffers(1,&transparentVBO);
-    glBindVertexArray(transparentVAO);
-    glBindBuffer( GL_ARRAY_BUFFER,transparentVBO );
-    glBufferData( GL_ARRAY_BUFFER,sizeof(transparentVertices), transparentVertices,GL_STATIC_DRAW );
+#pragma endregion
+
+// 额外的模型
+#pragma region extrac mesh
+///------------------------------------窗户透明混合------------------------------
+        //开启混合设置
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        
+        //窗户 VAO
+        unsigned int transparentVAO, transparentVBO;
+        glGenVertexArrays(1,&transparentVAO);
+        glGenBuffers(1,&transparentVBO);
+        glBindVertexArray(transparentVAO);
+        glBindBuffer( GL_ARRAY_BUFFER,transparentVBO );
+        glBufferData( GL_ARRAY_BUFFER,sizeof(transparentVertices), transparentVertices,GL_STATIC_DRAW );
     
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),(void*)(3 *sizeof(float)) );
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),(void*)(3 *sizeof(float)) );
     
-    glBindVertexArray(0);
+        glBindVertexArray(0);
+
+#pragma endregion
+
+ 
+// 创建材质
+#pragma region create material
+    FMaterial* windowMaterial = new FMaterial(testshader,windowTexture->Id,60);
+#pragma endregion
+
     
+// 创建渲染循环
+#pragma region create render loop
     ////----------------------------------Render Loop 渲染循环 -------------------------  
     while (!glfwWindowShouldClose(window))
     {   
@@ -485,6 +400,7 @@ int main(int argc, char* argv[])
         ImGui_ImplGlfwGL3_NewFrame();
 
         //--------------------------------------绘制mesh----------------------------
+        glDisable(GL_BLEND);
         //设置模型做变换  model矩阵
         model.ResetTransform();
         model.modelMatrix = glm::rotate(model.modelMatrix, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -506,23 +422,19 @@ int main(int argc, char* argv[])
         //调用绘制每一个mesh对象
         model.Draw(testshader);
 
-
-        //------------------------------------窗户透明混合------------------------------
+        //------------------------------------窗户-------------------
         //开启混合设置
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
         //绑定vao
         glBindVertexArray(transparentVAO);
-        
 
         //绑定纹理
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, transparentTexture);
+        glBindTexture(GL_TEXTURE_2D, windowTexture->Id);
         testshader->SetUniform1i("material.diffuse",0);
         
 
-             
         //设置矩阵
         glm::mat4 windowMMatrix = glm::scale( glm:: mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
         windowMMatrix = glm::translate(windowMMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -530,12 +442,8 @@ int main(int argc, char* argv[])
         //传递参数
         testshader->SetRenderingData(windowMMatrix,viewMat,projMat);
 
-        
         //drawcall
         glDrawArrays(GL_TRIANGLES, 0, 6);
-      
-
-      
 
         //----------------------------------------绘制灯光控件显示-------------------------
         //设置 灯光绘制所需的数据并传递
@@ -592,6 +500,8 @@ int main(int argc, char* argv[])
 
     ImGui_ImplGlfwGL3_Shutdown();
     ImGui::DestroyContext();
+#pragma endregion
+    
     //删除释放资源的方法，清理所有资源 并正确地退出所有应用
     glfwTerminate();
     return 0;
