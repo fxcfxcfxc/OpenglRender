@@ -342,12 +342,14 @@
     <ClInclude Include="Src\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Shader\fragmentSource.frag" />
+    <Text Include="Shader\Lambert.frag" />
     <Text Include="Shader\LightfragmentSource.frag" />
     <Text Include="Shader\LightvertexSource.vert" />
+    <Text Include="Shader\ScenePost.frag" />
+    <Text Include="Shader\ScenePost.vert" />
     <Text Include="Shader\Unit.frag" />
     <Text Include="Shader\Unit.vert" />
-    <Text Include="Shader\vertexSource.vert" />
+    <Text Include="Shader\Lambert.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Debug\model\body_dif.png" />

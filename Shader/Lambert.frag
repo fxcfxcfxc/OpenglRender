@@ -85,7 +85,8 @@ vec3 GetPointLight( LightPoint lP, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Materi
   
 //diffuse
     vec3  lDirWS =  normalize(lP.pos - posWS);
-    vec3  diffuseTexture = texture(mat.diffuse, TexCoord).rgb;
+     float gamma = 2.2;     
+     vec3 diffuseTexture = pow( texture(material.diffuse, TexCoord).rgb,vec3(gamma) );   
     vec3 lambert = max(0,  dot( nDirWS,lDirWS) ) * diffuseTexture  *lP.color; 
 
 //speuclar
@@ -155,8 +156,9 @@ vec3 GetSpotLight( LightSpot lS, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material
 
 
 void main()
-{             
-         vec3 diffuseTexture = texture(material.diffuse, TexCoord).rgb;   
+{        
+         float gamma = 2.2;     
+         vec3 diffuseTexture = pow( texture(material.diffuse, TexCoord).rgb,vec3(gamma) );   
          float alpha = texture(material.diffuse, TexCoord).r;
          vec3 ambient  =   ambientColor *  diffuseTexture;
          vec3 vDirWs = normalize(cameraPos - posWS);

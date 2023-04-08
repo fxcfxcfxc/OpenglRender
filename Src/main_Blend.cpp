@@ -96,7 +96,16 @@ float transparentVertices[]= {
         1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
         1.0f,  0.5f,  0.0f,  1.0f,  0.0f
 };
+float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+    // positions   // texCoords
+    -1.0f,  1.0f,  0.0f, 1.0f,
+    -1.0f, -1.0f,  0.0f, 0.0f,
+     1.0f, -1.0f,  1.0f, 0.0f,
 
+    -1.0f,  1.0f,  0.0f, 1.0f,
+     1.0f, -1.0f,  1.0f, 0.0f,
+     1.0f,  1.0f,  1.0f, 1.0f
+};
 
 
 #pragma endregion
@@ -223,8 +232,9 @@ int main(int argc, char* argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
- 
-    GLFWwindow* window = glfwCreateWindow(1600, 1200, "My OpenGl Game", NULL, NULL);
+    const int srcWidth =1600;
+    const int srcHeight =1200;
+    GLFWwindow* window = glfwCreateWindow(srcWidth, srcHeight, "My OpenGl Game", NULL, NULL);
     if (window == NULL) 
     {
        printf("Open window failed");
@@ -263,11 +273,10 @@ int main(int argc, char* argv[])
 // create shader  
 #pragma region Init Shader Program
 
-    Shader* testshader = new Shader("Shader/vertexSource.vert", "Shader/fragmentSource.frag");
+    Shader* lambertShader = new Shader("Shader/Lambert.vert", "Shader/Lambert.frag");
     Shader* Unitshader = new Shader("Shader/Unit.vert", "Shader/Unit.frag");
-
-
     Shader* lightShader = new Shader("Shader/LightvertexSource.vert", "Shader/LightfragmentSource.frag");
+    Shader* postShader = new Shader("Shader/ScenePost.vert", "Shader/ScenePost.frag");
 
 #pragma endregion  
 
@@ -332,9 +341,9 @@ int main(int argc, char* argv[])
  
 // create material
 #pragma region create material
-    FMaterial* windowMaterial = new FMaterial(testshader,windowTexture->Id,100);
-    FMaterial* floorMaterial = new FMaterial(testshader,floorTexture->Id,100);
-    FMaterial* carMaterial = new FMaterial(testshader,carTexture->Id,100);
+    FMaterial* windowMaterial = new FMaterial(lambertShader,windowTexture->Id,100);
+    FMaterial* floorMaterial = new FMaterial(lambertShader,floorTexture->Id,100);
+    FMaterial* carMaterial = new FMaterial(lambertShader,carTexture->Id,150);
 
 #pragma endregion
 
@@ -353,6 +362,51 @@ int main(int argc, char* argv[])
     FModel carModel(carPath,carMaterial);
 
 #pragma endregion
+
+
+//后处理
+#pragma region postProcessing
+    //PostProcesing
+    // screen quad VAO
+    unsigned int quadVAO, quadVBO;
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glBindVertexArray(0);
+
+    
+    //----------------------------------------离屏framebuffer
+
+    
+    unsigned int framebuffer;
+    glGenFramebuffers(1,&framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
+
+    unsigned int textureColorbuffer;
+    glGenTextures(1,&textureColorbuffer);
+    glBindTexture(GL_TEXTURE_2D,textureColorbuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, srcWidth, srcHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);    
+    glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,textureColorbuffer,0);
+
+    unsigned int rbo;
+    glGenRenderbuffers(1,&rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER,rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, srcWidth,srcHeight);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,rbo);
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) !=GL_FRAMEBUFFER_COMPLETE)
+        std::cout<< "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" <<std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER,0);
+
+#pragma endregion
+
     
 // create render loop
 #pragma region create render loop
@@ -360,36 +414,60 @@ int main(int argc, char* argv[])
     while (!glfwWindowShouldClose(window))
     {   
         processInput(window);
+        //----------------------------------------离屏framebuffer
+        //glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
+        glEnable(GL_FRAMEBUFFER_SRGB);
+        glEnable(GL_DEPTH_TEST);
+        //-------------------------------------------------------------
+        
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ImGui_ImplGlfwGL3_NewFrame();
+        
 
-        //-----------------------------------------------------------------逻辑更新
+        //-----------------------------------------------------------------逻辑更新-----
         viewMat = myCamera.GetViewMatrix();
         lightP->position = pointPosition;
         lightP->color = glm::vec3(clear_color.x,clear_color.y,clear_color.z);
-        testshader->use();
-        testshader->SetRenderingData(viewMat, projMat, abColor, lightD, lightP, lightS, myCamera);
+        lambertShader->use();
+        lambertShader->SetRenderingData(viewMat, projMat, abColor, lightD, lightP, lightS, myCamera);
         floorModel.UpdateTransform(angle,floorTranlate);
         carModel.UpdateTransform(angle,carTranlate);
-
-        //-----------------------------------------------------------------不透明绘制
+        
+        //-----------------------------------------------opquape---- 
         glDisable(GL_BLEND);
         floorModel.Draw();
         carModel.Draw();
         
-        //------------------------------------------------------------------半透明绘制
+        //-----------------------------------------------transparent---
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         windowModel.Draw();
+
         
-        //------------------------------------------------------------------Gizmo 绘制
+        //----------------------------------------------Postprocesing-------------------
+        // glBindFramebuffer(GL_FRAMEBUFFER,0);
+        // glDisable(GL_DEPTH_TEST);
+        // glClearColor(1.0f,1.0f,1.0f,1.0f);
+        // glClear(GL_COLOR_BUFFER_BIT);
+        //
+        // postShader->use();
+        // glBindVertexArray(quadVAO);
+        // glActiveTexture(GL_TEXTURE0);
+        // glBindTexture(GL_TEXTURE_2D,textureColorbuffer);
+        // postShader->SetUniform1i("screenTexture",0);
+        // glDrawArrays(GL_TRIANGLES,0,6);
+        
+        
+        //-----------------------------------------------Gizmo------
         DrawGizmo::mMatrix = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
         DrawGizmo::mMatrix = glm::rotate(DrawGizmo::mMatrix, glm::radians(lightangle), glm::vec3(0.0f, 1.0f, 0.0f));
         DrawGizmo::mMatrix = glm::translate(DrawGizmo::mMatrix, pointPosition);
         DrawGizmo::SetGizmoShader(lightShader,DrawGizmo::mMatrix,viewMat,projMat);
         unsigned int VAO,VBO;
         DrawGizmo::DrawBox(VAO,VBO);
+        
+ 
         
         //----------------------------imgui 绘制--------------------------------
         //imgui
