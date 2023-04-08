@@ -11,13 +11,11 @@ class FMaterial
 public:
 	Shader* shader;
 	unsigned int diffuse;
-	unsigned int specular;
-
 	float shininess;
-
+	FMaterial();
 	FMaterial(Shader* _Shader, unsigned int _Diffuse, float _Shininess);
 	
-	  
+
 
 };
 

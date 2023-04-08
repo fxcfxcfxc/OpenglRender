@@ -11,10 +11,13 @@
 // #include "stb_image.h"
 
 #include <glm.hpp>
+#include <GLFW/glfw3native.h>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 #include "Camera.h"
 #include "DrawGizmo.h"
+#include "FModel.h"
+
 #include "LightDirectional.h"
 #include "LightPoint.h"
 #include "Material.h"
@@ -25,7 +28,7 @@
 #include "imgui/imgui_impl_glfw_gl3.h"
 #include "Texture.h"
 
-//ÊÖ¶¯Ä£ĞÍÊı¾İ
+
 #pragma region Model Data
 float vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -98,13 +101,13 @@ float transparentVertices[]= {
 
 #pragma endregion
 
-//´´½¨Ïà»ú
+
 #pragma region  Create Camera
 
-Camera myCamera(glm::vec3(0, 0.5f, 3.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f, .0));
+Camera myCamera(glm::vec3(0, 0.5f, 5.0f), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1.0f, .0));
 #pragma endregion
 
-//¸üĞÂ¼üÅÌÊäÈë ¸üĞÂÏà»úÎ»ÖÃ·½Ïò
+//update keyboard
 #pragma region Camera  Update Declare
 float lastX;
 float lastY;
@@ -134,7 +137,7 @@ void processInput(GLFWwindow*  window)
     }
 
 
-    //°´ÏÂWS
+    //æŒ‰ä¸‹WS
     if ( glfwGetKey(window,GLFW_KEY_W) == GLFW_PRESS )
     {
         myCamera.speedZ = 1.0f;
@@ -149,7 +152,7 @@ void processInput(GLFWwindow*  window)
     }
 
 
-    //°´ÏÂAD
+    //æŒ‰ä¸‹AD
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
         myCamera.speedX = 1.0f;
@@ -163,7 +166,7 @@ void processInput(GLFWwindow*  window)
         myCamera.speedX = 0;
     }
 
-    //°´ÏÂQE
+    //æŒ‰ä¸‹QE
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     {
         myCamera.speedY = 1.0f;
@@ -213,14 +216,14 @@ int main(int argc, char* argv[])
     
     std::string exePath = argv[0];
 
-// ´´½¨´°¿Ú
+// create window
 #pragma region OpenWindow   
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    //ÊµÀı»¯´°¿Ú¶ÔÏó
+ 
     GLFWwindow* window = glfwCreateWindow(1600, 1200, "My OpenGl Game", NULL, NULL);
     if (window == NULL) 
     {
@@ -230,10 +233,9 @@ int main(int argc, char* argv[])
     }
     glfwMakeContextCurrent(window);
 
-    //ÉèÖÃÊó±ê ¹â±êÔËĞĞºó²»ÏÔÊ¾
+  
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    //¼àÌıÊó±ê¼üÅÌÊÂ¼ş£¬¸üĞÂÉãÏñ»úÊı¾İ
     //glfwSetCursorPosCallback(window, mouse_callback);
 
     //
@@ -249,45 +251,34 @@ int main(int argc, char* argv[])
 
     
     ////---------------------------- buffer------------------------
-    //ÉèÖÃäÖÈ¾´°¿ÚµÄ´óĞ¡
+
     glViewport(0,0,1600,1200);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     
-    //Æô¶¯zbuffer
+
     glEnable(GL_DEPTH_TEST);
 
 #pragma endregion
     
-// ´´½¨shader  
+// create shader  
 #pragma region Init Shader Program
-    //´´½¨Ò»¸öMesh ĞèÒªÓÃµ½µÄshader
-    Shader* testshader = new Shader("Shader/vertexSource.vert", "Shader/fragmentSource.frag");
 
-    //»æÖÆµÆ¹â¸¨ÖúÏÔÊ¾ shader
+    Shader* testshader = new Shader("Shader/vertexSource.vert", "Shader/fragmentSource.frag");
+    Shader* Unitshader = new Shader("Shader/Unit.vert", "Shader/Unit.frag");
+
+
     Shader* lightShader = new Shader("Shader/LightvertexSource.vert", "Shader/LightfragmentSource.frag");
 
-
-    //»ìºÏshader
-    //Shader* blendShader = new Shader("Shader/LightvertexSource.vert", "Shader/LightfragmentSource.frag");
 #pragma endregion  
 
-// ´´½¨Material
-#pragma region Init Material  Data
-//--------------------------Creat Material
-//Material* myMaterial = new Material(testshader,
-//                                        LoadImageToGPU("Debug/model/body_dif.png", GL_RGBA, GL_RGBA, Shader::Diffuse),
-//                                        LoadImageToGPU("resource/container2specular.png", GL_RGBA, GL_RGBA, Shader::Specular),
-//                                        glm::vec3(1.0f, 1.0f, 1.0f),
-//                                        64.0f);
-#pragma endregion 
 
-// ´´½¨model
+// init Matrix
 #pragma region Init and Load Models to VAO VBO
     std::string projectPath = GetFilePath() + "\\model\\nanosuit.obj";
     Model model( projectPath);
  #pragma endregion
     
-// ´´½¨Ïà»ú
+// create camera
 #pragma region MVP vertex
     //world->view
     glm::mat4 viewMat; 
@@ -296,182 +287,123 @@ int main(int argc, char* argv[])
     projMat = glm:: perspective(glm::radians(45.0f), 1600.0f / 1200.0f,  0.1f, 100.0f);
 #pragma endregion
 
-// ´´½¨ÎÆÀí
+// creat texture
 #pragma region create Texture
-    // ¼ÓÔØÌùÍ¼
-    FTexture* windowTexture =new FTexture("E:\\Project\\Opengl\\resource\\window.png");  
+    FTexture* windowTexture =new FTexture("E:\\Project\\Opengl\\resource\\window.png");
+    FTexture* floorTexture  =new FTexture("E:\\Project\\Opengl\\resource\\Stone_floor_albedo.png");
+    FTexture* carTexture  =new FTexture("E:\\Project\\Opengl\\resource\\CarDiffuse.png");
 #pragma endregion
 
-// ´´½¨µÆ¹â
+// create Light
 #pragma region Init Light
 
-    //ÊµÀı»¯Æ½ĞĞ¹â
+
     LightDirectional * lightD = new LightDirectional(glm::vec3(0.0f, 4.0f ,0.0f),
                                                      glm::vec3(glm::radians(45.0f),0,0),
                                                      glm::vec3(1.0f, 1.0f, 1.0f));
 
-    //ÊµÀı»¯µã¹â
+
     LightPoint* lightP = new LightPoint(glm::vec3(-3.0f, 5.0f, 6.0f),
                                         glm::vec3(glm::radians(90.0f), 0, 0), 
                                         glm::vec3(3.0f, 1.0f, 0.0f));
 
-    //ÊµÀı»¯¾Û¹âµÆ
     LightSpot* lightS = new LightSpot(glm::vec3(0.0f, 4.0f, 0.0f),
                                       glm::vec3(glm::radians(90.0f), 0, 0),
                                       glm::vec3(1.0f, 1.0f, 2.0f));
 
 #pragma endregion
-
     
-// imguiÊı¾İ
+// imgui data
 #pragma region create transform
     ImGui::CreateContext();
     ImGui_ImplGlfwGL3_Init(window, true);
     ImGui::StyleColorsDark();
     bool show_demo_window = true;
     bool show_another_window = false;
-
-    //¼ÇÂ¼ Ä£ĞÍÎ»ÒÆÖµ
-    glm::vec3 t = glm::vec3(0.0f, -10.0f, 0.0f);
-    
-    //¼ÇÂ¼ Ä£ĞÍĞı×ªÖµ
+    glm::vec3 floorTranlate = glm::vec3(0.0f, -10.0f, 0.0f);
+    glm::vec3 carTranlate = glm::vec3(0.0f, -10.0f, 0.0f);
     float angle = 0;
-
-    //´´½¨»·¾³¹âÑÕÉ«
     glm::vec3 abColor = glm::vec3(0.2f, 0.1f, 0.4f);
-
-
-    //Gizmo ±ä»¯
     float lightangle = 0;
-    //µÆ¹âÎ»ÖÃ
     glm::vec3 pointPosition = glm::vec3(lightP->position);
-
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 #pragma endregion
-
-// ¶îÍâµÄÄ£ĞÍ
-#pragma region extrac mesh
-///------------------------------------´°»§Í¸Ã÷»ìºÏ------------------------------
-        //¿ªÆô»ìºÏÉèÖÃ
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-        
-        //´°»§ VAO
-        unsigned int transparentVAO, transparentVBO;
-        glGenVertexArrays(1,&transparentVAO);
-        glGenBuffers(1,&transparentVBO);
-        glBindVertexArray(transparentVAO);
-        glBindBuffer( GL_ARRAY_BUFFER,transparentVBO );
-        glBufferData( GL_ARRAY_BUFFER,sizeof(transparentVertices), transparentVertices,GL_STATIC_DRAW );
-    
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),(void*)(3 *sizeof(float)) );
-    
-        glBindVertexArray(0);
-
-#pragma endregion
-
  
-// ´´½¨²ÄÖÊ
+// create material
 #pragma region create material
-    FMaterial* windowMaterial = new FMaterial(testshader,windowTexture->Id,60);
+    FMaterial* windowMaterial = new FMaterial(testshader,windowTexture->Id,100);
+    FMaterial* floorMaterial = new FMaterial(testshader,floorTexture->Id,100);
+    FMaterial* carMaterial = new FMaterial(testshader,carTexture->Id,100);
+
 #pragma endregion
 
+//åŠ è½½æ¨¡å‹ï¼Œé…ç½®æ¨¡å‹æè´¨è´´å›¾
+#pragma region create model
+//åŠ è½½çª—æˆ·æ¨¡å‹
+    std::string windowPath = GetFilePath() + "\\resource\\window.obj";
+    FModel windowModel(windowPath,windowMaterial);
     
-// ´´½¨äÖÈ¾Ñ­»·
+//åŠ è½½åœ°é¢æ¨¡å‹
+    std::string floorPath = GetFilePath() + "\\resource\\floor.obj";
+    FModel floorModel(floorPath,floorMaterial);
+
+//åŠ è½½æ±½è½¦æ¨¡å‹
+    std::string carPath = GetFilePath() + "\\resource\\car.obj";
+    FModel carModel(carPath,carMaterial);
+
+#pragma endregion
+    
+// create render loop
 #pragma region create render loop
-    ////----------------------------------Render Loop äÖÈ¾Ñ­»· -------------------------  
+  
     while (!glfwWindowShouldClose(window))
     {   
- 
-
-        //»ñÈ¡¼üÅÌÊäÈë
         processInput(window);
-
-        //ÉèÖÃÓÃÀ´ Çå¿ÕÆÁÄ»µÄ ÑÕÉ«
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-
-        //Çå¿ÕÆÁÄ» Ä£Ê½Îª color buffer ,DEPTH_BUFFER
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ImGui_ImplGlfwGL3_NewFrame();
 
-        //--------------------------------------»æÖÆmesh----------------------------
-        glDisable(GL_BLEND);
-        //ÉèÖÃÄ£ĞÍ×ö±ä»»  model¾ØÕó
-        model.ResetTransform();
-        model.modelMatrix = glm::rotate(model.modelMatrix, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
-        model.modelMatrix = glm::translate(model.modelMatrix, t);
-
-        //ÉèÖÃÏà»úÊı¾İ V¾ØÕó
+        //-----------------------------------------------------------------é€»è¾‘æ›´æ–°
         viewMat = myCamera.GetViewMatrix();
-        
-        //¸üĞÂµã¹âÔ´Êı¾İ
         lightP->position = pointPosition;
         lightP->color = glm::vec3(clear_color.x,clear_color.y,clear_color.z);
-
-        //°ó¶¨µ±Ç°Ê¹ÓÃµÄshader×ÅÉ«
         testshader->use();
+        testshader->SetRenderingData(viewMat, projMat, abColor, lightD, lightP, lightS, myCamera);
+        floorModel.UpdateTransform(angle,floorTranlate);
+        carModel.UpdateTransform(angle,carTranlate);
 
-        //ÉèÖÃäÖÈ¾ËùĞèµÄ×îĞÂÊı¾İ ´«µİ¸øshader×ÅÉ«Æ÷ µÆ¹âÊı¾İ£¨Æ½ĞĞ¹â£¬·½Ïò¹â£¬µã¹âÔ´£¬»·¾³¹â£¬MVP¾ØÕó£¬Ïà»úÊı¾İ£©
-        testshader->SetRenderingData(model.modelMatrix, viewMat, projMat, abColor, lightD, lightP, lightS, myCamera);
-
-        //µ÷ÓÃ»æÖÆÃ¿Ò»¸ömesh¶ÔÏó
-        model.Draw(testshader);
-
-        //------------------------------------´°»§-------------------
-        //¿ªÆô»ìºÏÉèÖÃ
+        //-----------------------------------------------------------------ä¸é€æ˜ç»˜åˆ¶
+        glDisable(GL_BLEND);
+        floorModel.Draw();
+        carModel.Draw();
+        
+        //------------------------------------------------------------------åŠé€æ˜ç»˜åˆ¶
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-        //°ó¶¨vao
-        glBindVertexArray(transparentVAO);
-
-        //°ó¶¨ÎÆÀí
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, windowTexture->Id);
-        testshader->SetUniform1i("material.diffuse",0);
+        windowModel.Draw();
         
-
-        //ÉèÖÃ¾ØÕó
-        glm::mat4 windowMMatrix = glm::scale( glm:: mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-        windowMMatrix = glm::translate(windowMMatrix, glm::vec3(0.0f, 0.0f, 1.0f));
-
-        //´«µİ²ÎÊı
-        testshader->SetRenderingData(windowMMatrix,viewMat,projMat);
-
-        //drawcall
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        //----------------------------------------»æÖÆµÆ¹â¿Ø¼şÏÔÊ¾-------------------------
-        //ÉèÖÃ µÆ¹â»æÖÆËùĞèµÄÊı¾İ²¢´«µİ
-        //¸üĞÂ M¾ØÕó
+        //------------------------------------------------------------------Gizmo ç»˜åˆ¶
         DrawGizmo::mMatrix = glm::scale( glm:: mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
         DrawGizmo::mMatrix = glm::rotate(DrawGizmo::mMatrix, glm::radians(lightangle), glm::vec3(0.0f, 1.0f, 0.0f));
         DrawGizmo::mMatrix = glm::translate(DrawGizmo::mMatrix, pointPosition);
-
-        //ÉèÖÃ¾ØÕó£¬shader
         DrawGizmo::SetGizmoShader(lightShader,DrawGizmo::mMatrix,viewMat,projMat);
-        
-        //»æÖÆ¸¨ÖúµÆ¹â¿Ø¼ş£¬·½±ã¹Û²ì£¨ÓÃbox±êÖ¾£©
         unsigned int VAO,VBO;
         DrawGizmo::DrawBox(VAO,VBO);
-   
-	    
-
+        
+        //----------------------------imgui ç»˜åˆ¶--------------------------------
         //imgui
         {
             static float f = 0.0f;
             static int counter = 0;
             ImGui::Text("Hello, world!");
-            // µ÷½ÚÄ£ĞÍÎ»ÖÃ
-            ImGui::SliderFloat3("t", &t.x, -30.0f, 30.0f);
-            // µ÷½Úµã¹âÔ´Î»ÖÃ
+        
+            ImGui::SliderFloat3("floorTranlate", &floorTranlate.x, -30.0f, 30.0f);
+            ImGui::SliderFloat3("carTranlate", &carTranlate.x, -30.0f, 30.0f);
+       
             ImGui::SliderFloat3("pointPosition", &pointPosition.x, -30.0f, 30.0f);
             
-            // µ÷½ÚÄ£ĞÍĞı×ª
+   
             ImGui::SliderFloat("angle", &angle, 0.0f, 360.0f);
             ImGui::SliderFloat("lightangle", &lightangle, 0.0f, 360.0f);
             
@@ -502,13 +434,9 @@ int main(int argc, char* argv[])
     ImGui::DestroyContext();
 #pragma endregion
     
-    //É¾³ıÊÍ·Å×ÊÔ´µÄ·½·¨£¬ÇåÀíËùÓĞ×ÊÔ´ ²¢ÕıÈ·µØÍË³öËùÓĞÓ¦ÓÃ
+    // release
     glfwTerminate();
     return 0;
-
-
-
-
 
 
 }

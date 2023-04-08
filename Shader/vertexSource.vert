@@ -5,12 +5,12 @@ layout(location = 2) in vec2 aTexCoord;
 
 
 
-//uniform  ‰»Î
+//uniform 
 uniform mat4 modelMat;
 uniform mat4 viewMat;
 uniform mat4 projMat;
 
-// ‰≥ˆ
+//
 //out vec4 vertexColor;
 out vec2 TexCoord;
 out vec3 nDirWS;

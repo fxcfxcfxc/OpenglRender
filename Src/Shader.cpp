@@ -133,23 +133,23 @@ void Shader::checkCompileErrors(unsigned int ID, std::string type)
 
 }
 
-void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p, glm::vec3 ambientColor,LightDirectional* lightD, LightPoint* lightP,LightSpot* lightS,Camera currentCamera)
+void Shader::SetRenderingData(glm::mat4 v,glm::mat4 p, glm::vec3 ambientColor,LightDirectional* lightD, LightPoint* lightP,LightSpot* lightS,Camera currentCamera)
 {
 	
-	//???????????
-	glUniformMatrix4fv(glGetUniformLocation(ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(m));
+
+	//glUniformMatrix4fv(glGetUniformLocation(ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(m));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(v));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "projMat"), 1, GL_FALSE, glm::value_ptr(p));
 
-	//??????
+
 	glUniform3f(glGetUniformLocation(ID, "ambientColor"), ambientColor.x,ambientColor.y, ambientColor.z);
             
-	//??й?????
+
 	glUniform3f(glGetUniformLocation(ID, "lightd.pos"), lightD->position.x, lightD->position.y, lightD->position.z);
 	glUniform3f(glGetUniformLocation(ID, "lightd.direction"), lightD->direction.x, lightD->direction.y, lightD->direction.z);
 	glUniform3f(glGetUniformLocation(ID, "lightd.color"), lightD->color.x, lightD->color.y, lightD->color.z);
 
-	//????????
+
 	glUniform3f(glGetUniformLocation(ID, "lightP.pos"), lightP->position.x, lightP->position.y, lightP->position.z );
 	glUniform3f(glGetUniformLocation(ID, "lightP.color"), lightP->color.x, lightP->color.y, lightP->color.z);
 	glUniform1f(glGetUniformLocation(ID, "lightP.constant"), lightP->constant);
@@ -157,19 +157,17 @@ void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p, glm::vec3 am
 	glUniform1f(glGetUniformLocation(ID, "lightP.quadratic"), lightP->quadratic);
 
 
-	//????
+
 	glUniform3f(glGetUniformLocation(ID, "lightS.pos"), lightS->position.x, lightS->position.y, lightS->position.z );
 	glUniform3f(glGetUniformLocation(ID, "lightS.color"), lightS->color.x, lightS->color.y, lightS->color.z );
 	glUniform3f(glGetUniformLocation(ID, "lightS.direction"), lightS->direction.x, lightS->direction.y, lightS->direction.z );
 	glUniform1f(glGetUniformLocation(ID, "lightS.cosPhyInner"), lightS->cosPhyInner );
 	glUniform1f(glGetUniformLocation(ID, "lightS.cosPhyOut"), lightS->cosPhyOut );
 
-	//???????
 	glUniform3f( glGetUniformLocation(ID,"cameraPos"), currentCamera.Position.x, currentCamera.Position.y, currentCamera.Position.z);
 
-	//???????
 	SetUniform3f("material.ambient", glm::vec3(1.0f, 1.0f, 1.0f));
-	SetUniform1f("material.shininess",64.0f);
+	//SetUniform1f("material.shininess",64.0f);
 	
 }
 
@@ -181,4 +179,9 @@ void Shader::SetRenderingData(glm::mat4 m, glm::mat4 v,glm::mat4 p)
 	glUniformMatrix4fv(glGetUniformLocation(ID, "viewMat"), 1, GL_FALSE, glm::value_ptr(v));
 	glUniformMatrix4fv(glGetUniformLocation(ID, "projMat"), 1, GL_FALSE, glm::value_ptr(p));
 
+}
+
+void Shader::SetModelTransform(glm::mat4 m )
+{
+	glUniformMatrix4fv(glGetUniformLocation(ID, "modelMat"), 1, GL_FALSE, glm::value_ptr(m));
 }

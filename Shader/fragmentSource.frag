@@ -56,7 +56,7 @@ uniform vec3 cameraPos;
 out vec4 FragColor;
 
 
-//ƽ�й�
+//
 vec3 GetDirectionLight( LightDirection ld, vec3 nDirWS, vec3 vDirWS ,vec3 posWS ,Material mat,vec2 TexCoord)
 {
     vec3 directionOut; 
@@ -78,7 +78,7 @@ vec3 GetDirectionLight( LightDirection ld, vec3 nDirWS, vec3 vDirWS ,vec3 posWS 
 }
 
 
-//���Դ
+//
 vec3 GetPointLight( LightPoint lP, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material mat,vec2 TexCoord)
 {
     vec3 PointOut;
@@ -94,7 +94,7 @@ vec3 GetPointLight( LightPoint lP, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Materi
    //vec3 specular = pow( max(dot(rDir, vDirWS),0 ) ,mat.shininess) * lP.color  * specularTexture;
    vec3 specular = pow( max(dot(rDir, vDirWS),0 ) ,mat.shininess) * lP.color ;
 
-//attenuation ����˥��
+//attenuation 
     float Pointdistance = length(lP.pos - posWS);
     float attenuation  =1.0/ (lP.constant + lP.linear *Pointdistance + lP.quadratic * Pointdistance * Pointdistance);
 
@@ -104,7 +104,7 @@ vec3 GetPointLight( LightPoint lP, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Materi
   return PointOut;
 }
 
-//�۹��
+//
 vec3 GetSpotLight( LightSpot lS, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material mat,vec2 TexCoord)
 {
     vec3 SpotOut;
@@ -120,16 +120,16 @@ vec3 GetSpotLight( LightSpot lS, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material
    vec3 specularTexture = texture(mat.specular, TexCoord).rgb ;
    vec3 specular = pow( max(dot(rDir, vDirWS),0 ) ,mat.shininess) * lS.color * specularTexture;
 
-//attenuation ����˥��
+//attenuation 
     //float Pointdistance = length(LightPos - posWS);
     //float attenuation  =1.0/ (lS.constant + lS.linear *Pointdistance + lS.quadratic * Pointdistance * Pointdistance);
 
 //merge
-        // ���㵱ǰ�Ƕ�
+       
         float cosTheta = dot( normalize (posWS - lS.pos), -1 * lDirWS );
 
 
-        //�������ڽǶ������Ӧ��˥��ǿ��
+  
         float spotRatio = 0;
         if(cosTheta > lS.cosPhyInner)
         {               
@@ -157,7 +157,7 @@ vec3 GetSpotLight( LightSpot lS, vec3 nDirWS, vec3 vDirWS ,vec3 posWS , Material
 void main()
 {             
          vec3 diffuseTexture = texture(material.diffuse, TexCoord).rgb;   
-         float alpha = texture(material.diffuse, TexCoord).a;
+         float alpha = texture(material.diffuse, TexCoord).r;
          vec3 ambient  =   ambientColor *  diffuseTexture;
          vec3 vDirWs = normalize(cameraPos - posWS);
 
@@ -169,7 +169,7 @@ void main()
          //LightMergeColor += GetSpotLight(lightS, nDirWS, vDirWs, posWS, material, TexCoord)* 0.5;
     
 
-         FragColor = vec4( LightMergeColor +ambient , 0.5);
+          FragColor = vec4( LightMergeColor +ambient ,alpha);
           //FragColor = vec4( 1.0 ,1.0, 1.0, 1.0);
         
 }

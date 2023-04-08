@@ -13,44 +13,31 @@
 
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma = false);
 
-/**
- * \brief ?????obj??????????model??
- */
+
 class Model
 {
 public:
-	
-	//
-	Model(std::string path);
-
-	//
+	//field
 	std::vector<Texture> textures_loaded;
 
-	//
 	std::vector<Mesh> meshes;
 
-	//
 	std::string directory;
-
-	//mesh????
-	void Draw(Shader* shader);
-
-	//??????
-	static  void DrawLight(unsigned int &VAO,unsigned int &VBO);
-
-	//
+	
 	glm::mat4  modelMatrix;
 
+	//function
+	Model(std::string path);
+	
+	void Draw(Shader* shader);
+
 	void ResetTransform();
+	
 private:
 	void loadModel(std:: string path);
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	
 	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-
-
-
 };
 
 

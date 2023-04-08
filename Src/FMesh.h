@@ -5,8 +5,6 @@
 #include <vector>
 #include "shader.h"
 #include <gl/glew.h>
-
-
 #include "Material.h"
 
 struct MeshVertex {
@@ -17,38 +15,31 @@ struct MeshVertex {
 
 };
 
-struct MeshTexture{
-	unsigned int id;
-	std::string type;
-	std::string path;
-};
-
-
 /**
- * \brief 一个mesh 包含 顶点数据，顶点索引，纹理
+ * \brief 涓�涓猰esh 鍖呭惈 椤剁偣鏁版嵁锛岄《鐐圭储寮曪紝绾圭悊
  */
 class FMesh
 {
 public:
 	//field
-	//顶点列表
+
 	std::vector<MeshVertex> vertices;
 	
-	//顶点索引列表
-	std::vector<unsigned int> indices;
-	
-	//纹理列表
-	std::vector<MeshTexture> textures;
 
+	std::vector<unsigned int> indices;
+
+	//鏉愯川
+	FMaterial* material;
+	
 	//function
 	FMesh(float v[]);
 	
-	FMesh(std::vector<MeshVertex> vertices, std::vector<unsigned int> indices, std::vector<MeshTexture> textures);
+	FMesh(std::vector<MeshVertex> vertices, std::vector<unsigned int> indices,FMaterial*  mat);
 	
 	~FMesh();
 	
-	//调用drawcall绘制
-	void Draw(Shader* shader);
+
+	void Draw();
 
 
 private:
